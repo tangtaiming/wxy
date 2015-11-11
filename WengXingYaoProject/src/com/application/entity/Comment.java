@@ -3,7 +3,7 @@ package com.application.entity;
 import java.io.Serializable;
 
 /**
- * 评论实体类
+ * 评论实体类dddd
  * 
  * @author 唐泰明
  * @version 1.0
@@ -14,9 +14,9 @@ public class Comment implements Serializable {
 
 	// id
 	private int id;
-	
 	// 文章id
 	private String essayId;
+	
 	// 评论时间
 	private String createData;
 	// 评论内容
