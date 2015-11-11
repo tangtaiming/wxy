@@ -22,6 +22,7 @@ public class UserBizImpl implements UserBiz {
 			return null;
 		}
 		
+		
 		String userName = user.getUserName();
 		Integer status = -1;		
 		if (userDao.fetchIsUserTrue(userName)) {
