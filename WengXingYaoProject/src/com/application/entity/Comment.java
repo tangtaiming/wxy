@@ -14,6 +14,7 @@ public class Comment implements Serializable {
 
 	// id
 	private int id;
+	
 	// 文章id
 	private String essayId;
 	// 评论时间
