@@ -4,6 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 
 import com.application.dao.EssayDao;
@@ -21,17 +28,32 @@ public class EssayDaoImpl implements EssayDao {
 	
 	public static void main(String[] args) {
 		Essay essay = new Essay();
-		essay.setTitle("小明");
-		essay.setUser("");
+		essay.setUser("xiaoming");
+		essay.setTitle("小明title");
+		essay.setClick(0);
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String createDate = format.format(System.currentTimeMillis());
+		essay.setIssueData(createDate);
+		essay.setWriter("writer");
+		essay.setColor("red");
+		essay.setDescription("Description");
+		essay.setKeywords("keyword");
+		essay.setBody("body");
+		
+		EssayDao essayDao = new EssayDaoImpl();
+		System.out.println(essayDao.addEssay(essay));
+		
 	}
 	
 	public int addEssay(Essay essay) {
-		int isAddEssay = 0;
+		int isAddEssay = 0;		//默认0 表示正常
 		
 		con = dbUtil.getCon();
 		sql = "insert into essay(user, title, click, "
 				+ "issueData, writer, color, "
-				+ "description, keywords, body)";
+				+ "description, keywords, body) "
+				+ "values (?, ? , ?, ?, ? , ?, ?, ? , ?)";
 		try {
 			pre = con.prepareStatement(sql);
 			pre.setString(1, essay.getUser());
@@ -45,15 +67,8 @@ public class EssayDaoImpl implements EssayDao {
 			pre.setString(9, essay.getBody());
 			
 			isAddEssay = pre.executeUpdate();
-			con.commit();
 		} catch (SQLException e) {
 			System.out.println("-------------------添加文章‘异常’-------------------");
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			isAddEssay = -2;		//异常
 			e.printStackTrace();
 		} finally {
