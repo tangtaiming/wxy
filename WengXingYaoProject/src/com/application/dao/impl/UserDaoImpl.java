@@ -102,17 +102,8 @@ public class UserDaoImpl implements UserDao {
 			pre.setInt(6, user.getLoginAccount());
 			
 			isAddTrue = pre.executeUpdate();
-			if (isAddTrue > 0) {
-				con.setAutoCommit(false);
-				con.commit();
-			}
 		} catch (SQLException e) {
 			System.out.println("-------------------添加用户‘异常’-------------------");
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 		} finally {
 			dbUtil.close(con, pre);
@@ -131,17 +122,8 @@ public class UserDaoImpl implements UserDao {
 			pre.setString(1, userName);
 			
 			isDeleteTrue = pre.executeUpdate();
-			if (isDeleteTrue > 0) {
-				con.setAutoCommit(false);
-				con.commit();
-			}
 		} catch (SQLException e) {
 			System.out.println("-------------------根据账号删除数据‘异常’-------------------");
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 		} finally {
 			dbUtil.close(con, pre);
