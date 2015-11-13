@@ -45,15 +45,15 @@ public class EssayDaoImpl implements EssayDao {
 		// EssayDao essayDao = new EssayDaoImpl();
 		// System.out.println(essayDao.addEssay(essay));
 
-		int id = 2;
-		EssayDao essayDao = new EssayDaoImpl();
-		System.out.println(essayDao.fetchEssayById(2));
+//		int id = 2;
+//		EssayDao essayDao = new EssayDaoImpl();
+//		System.out.println(essayDao.fetchEssayById(2));
 
 	}
 
 	public int addEssay(Essay essay) {
 		int isAddEssay = 0; // 默认0 表示正常
-
+		
 		con = dbUtil.getCon();
 		sql = "insert into essay(user, title, click, "
 				+ "issueData, writer, color, "
