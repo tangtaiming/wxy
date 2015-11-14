@@ -7,6 +7,7 @@ package com.application.util;
  * 
  */
 public class PageUtil {
+	
 	/**
 	 * 创建分页工具类
 	 * 
@@ -16,15 +17,14 @@ public class PageUtil {
 	 * @return
 	 */
 	public static Page createPage(Integer currentPage, Integer everyPage,
-			Integer totalCurrent) {
+			Integer totalCurrent, Integer showNumber) {
 		currentPage = getCurrentPage(currentPage);
 		everyPage = getEveryPage(everyPage);
 		Integer totalPage = getTotalPage(totalCurrent, everyPage);
 		boolean isUpPage = getIsUpPage(currentPage);
 		boolean isDownPage = getIsDownPage(currentPage, totalPage);
-//		Page page = new Page(currentPage, totalPage, everyPage, totalCurrent,
-//				isUpPage, isDownPage);
-		Page page = null;
+		Page page = new Page(currentPage, totalPage, everyPage, totalCurrent,
+				showNumber, isUpPage, isDownPage);
 
 		return page;
 	}
@@ -35,7 +35,7 @@ public class PageUtil {
 	 * @param currentPage
 	 * @return Integer
 	 */
-	private static Integer getCurrentPage(Integer currentPage) {
+	public static Integer getCurrentPage(Integer currentPage) {
 		return currentPage == null || currentPage <= 0 ? 1 : currentPage;
 	}
 
@@ -92,4 +92,25 @@ public class PageUtil {
 	private static boolean getIsDownPage(Integer currentPage, Integer totalPage) {
 		return currentPage >= totalPage ? false : true;
 	}
+	
+	/**
+	 * 获取当前页第一条数据位置
+	 * @param currentPage
+	 * @param everyPage
+	 * @return
+	 */
+	public int currentFirstPage(Integer currentPage, Integer everyPage) {
+		return (everyPage * (currentPage - 1));
+	}
+	
+	/**
+	 * 获取当前页最后条数据位置
+	 * @param currentPage
+	 * @param everyPage
+	 * @return
+	 */
+	public int currentLastPage(Integer currentPage, Integer everyPage) {
+		return everyPage * currentPage;
+	}
+	
 }

@@ -8,86 +8,80 @@ package com.application.util;
  */
 public class Page {
 
-	// 当前页
-	private int current;
-	// 每页显示数量
-	private int pageNumber;
-	// 总页数
-	private int pageTotal;
-	// 提示分页显示个数
-	private int showNumber;
-	// 总记录数
-	private int recordTotalNumber;
-	// 是否有上一页
-	private boolean isUp;
-	// 是否有下一页
-	private boolean isDown;
+	private Integer currentPage; // 当前页
+	private Integer totalPage; // 总页数
+	private Integer everyPage; // 每页显示数量
+	private Integer totalCurrent; // 总记录数
+	private Integer showNumber; // 显示分页数量
+	private boolean isUpPage; // 是否有上一页
+	private boolean isDownPage; // 是否有下一页
 
-	public Page(int current, int pageNumber, int pageTotal, int showNumber,
-			int recordTotalNumber, boolean isUp, boolean isDown) {
-		this.current = current;
-		this.pageNumber = pageNumber;
-		this.pageTotal = pageTotal;
+	public Page(Integer currentPage, Integer totalPage, Integer everyPage,
+			Integer totalCurrent, Integer showNumber, boolean isUpPage,
+			boolean isDownPage) {
+		this.currentPage = currentPage;
+		this.totalPage = totalPage;
+		this.everyPage = everyPage;
+		this.totalCurrent = totalCurrent;
 		this.showNumber = showNumber;
-		this.recordTotalNumber = recordTotalNumber;
-		this.isUp = isUp;
-		this.isDown = isDown;
+		this.isUpPage = isUpPage;
+		this.isDownPage = isDownPage;
 	}
 
-	public int getCurrent() {
-		return current;
+	public Integer getCurrentPage() {
+		return currentPage;
 	}
 
-	public void setCurrent(int current) {
-		this.current = current;
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
 	}
 
-	public int getPageNumber() {
-		return pageNumber;
+	public Integer getTotalPage() {
+		return totalPage;
 	}
 
-	public void setPageNumber(int pageNumber) {
-		this.pageNumber = pageNumber;
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
 	}
 
-	public int getPageTotal() {
-		return pageTotal;
+	public Integer getEveryPage() {
+		return everyPage;
 	}
 
-	public void setPageTotal(int pageTotal) {
-		this.pageTotal = pageTotal;
+	public void setEveryPage(Integer everyPage) {
+		this.everyPage = everyPage;
 	}
 
-	public int getShowNumber() {
+	public Integer getTotalCurrent() {
+		return totalCurrent;
+	}
+
+	public void setTotalCurrent(Integer totalCurrent) {
+		this.totalCurrent = totalCurrent;
+	}
+
+	public Integer getShowNumber() {
 		return showNumber;
 	}
 
-	public void setShowNumber(int showNumber) {
+	public void setShowNumber(Integer showNumber) {
 		this.showNumber = showNumber;
 	}
 
-	public int getRecordTotalNumber() {
-		return recordTotalNumber;
+	public boolean isUpPage() {
+		return isUpPage;
 	}
 
-	public void setRecordTotalNumber(int recordTotalNumber) {
-		this.recordTotalNumber = recordTotalNumber;
+	public void setUpPage(boolean isUpPage) {
+		this.isUpPage = isUpPage;
 	}
 
-	public boolean isUp() {
-		return isUp;
+	public boolean isDownPage() {
+		return isDownPage;
 	}
 
-	public void setUp(boolean isUp) {
-		this.isUp = isUp;
-	}
-
-	public boolean isDown() {
-		return isDown;
-	}
-
-	public void setDown(boolean isDown) {
-		this.isDown = isDown;
+	public void setDownPage(boolean isDownPage) {
+		this.isDownPage = isDownPage;
 	}
 
 }

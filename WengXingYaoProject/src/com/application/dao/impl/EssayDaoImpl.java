@@ -5,12 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.application.dao.EssayDao;
@@ -28,8 +23,8 @@ public class EssayDaoImpl implements EssayDao {
 
 	public static void main(String[] args) {
 		// Essay essay = new Essay();
-		// essay.setUser("xiaoming");
-		// essay.setTitle("小明title");
+		// essay.setUser("3");
+		// essay.setTitle("3");
 		// essay.setClick(0);
 		//
 		// SimpleDateFormat format = new
@@ -45,15 +40,21 @@ public class EssayDaoImpl implements EssayDao {
 		// EssayDao essayDao = new EssayDaoImpl();
 		// System.out.println(essayDao.addEssay(essay));
 
-//		int id = 2;
-//		EssayDao essayDao = new EssayDaoImpl();
-//		System.out.println(essayDao.fetchEssayById(2));
+		// int id = 2;
+		// EssayDao essayDao = new EssayDaoImpl();
+		// System.out.println(essayDao.fetchEssayById(2));
+
+		int currentPage = 1;
+		int everPage = 2;
+		EssayDao essayDao = new EssayDaoImpl();
+		
+		System.out.println(essayDao.fetchEssayCount());
 
 	}
 
 	public int addEssay(Essay essay) {
 		int isAddEssay = 0; // 默认0 表示正常
-		
+
 		con = dbUtil.getCon();
 		sql = "insert into essay(user, title, click, "
 				+ "issueData, writer, color, "
@@ -116,23 +117,15 @@ public class EssayDaoImpl implements EssayDao {
 			res = pre.executeQuery();
 
 			if (res.next()) {
-				tempEssay = new Essay();
-				tempEssay.setId(res.getInt("id"));
-				tempEssay.setUser(res.getString("user"));
-				tempEssay.setTitle(res.getString("title"));
-				tempEssay.setClick(res.getInt("click"));
-				tempEssay.setIssueData(res.getString("issueData"));
-				tempEssay.setWriter(res.getString("writer"));
-				tempEssay.setColor(res.getString("color"));
-				tempEssay.setDescription(res.getString("description"));
-				tempEssay.setKeywords(res.getString("keywords"));
-				tempEssay.setBody(res.getString("body"));
+				tempEssay = getEssay(res);
 			}
 
 		} catch (SQLException e) {
 			System.out
 					.println("-------------------ID获取文章‘异常’-------------------");
 			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre, res);
 		}
 
 		return tempEssay;
@@ -146,6 +139,78 @@ public class EssayDaoImpl implements EssayDao {
 	public int updateEssay(Essay essay) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public List<Essay> fetchEssayByPage(int pageFirst, int pageLast) {
+		List<Essay> tempEssayList = null;
+		con = dbUtil.getCon();
+		sql = "select * from"
+				+ " (select rownum as r, t.*"
+				+ " (select * from essay order by id desc) a where rownumber <= ?)"
+				+ " where r < ?";
+		try {
+			pre = con.prepareStatement(sql);
+			pre.setInt(1, pageLast);
+			pre.setInt(2, pageFirst);
+
+			res = pre.executeQuery();
+			while (res.next()) {
+				tempEssayList = new ArrayList<Essay>();
+				tempEssayList.add(getEssay(res));
+			}
+		} catch (SQLException e) {
+			System.out
+					.println("-------------------分页查询文章‘异常’-------------------");
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre, res);
+		}
+
+		return tempEssayList;
+	}
+
+	public int fetchEssayCount() {
+		int count = 0;
+		con = dbUtil.getCon();
+		sql = "select count(*) from essay";
+		try {
+			pre = con.prepareStatement(sql);
+			res = pre.executeQuery();
+			
+			if (res.next()) {
+				count = res.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre, res);
+		}
+
+		return count;
+	}
+
+	/**
+	 * 获取Essay数据
+	 * 
+	 * @param res
+	 * @return
+	 * @throws SQLException
+	 */
+	private Essay getEssay(ResultSet res) throws SQLException {
+		Essay tempEssay = new Essay();
+		tempEssay.setId(res.getInt("id"));
+		tempEssay.setUser(res.getString("user"));
+		tempEssay.setTitle(res.getString("title"));
+		tempEssay.setClick(res.getInt("click"));
+		tempEssay.setIssueData(res.getString("issueData"));
+		tempEssay.setWriter(res.getString("writer"));
+		tempEssay.setColor(res.getString("color"));
+		tempEssay.setDescription(res.getString("description"));
+		tempEssay.setKeywords(res.getString("keywords"));
+		tempEssay.setBody(res.getString("body"));
+
+		return tempEssay;
 	}
 
 }
