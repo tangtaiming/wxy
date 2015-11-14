@@ -3,7 +3,6 @@ package com.application.dao;
 import java.util.List;
 
 import com.application.entity.Essay;
-import com.application.util.Page;
 
 /**
  * 文章数据层Dao
@@ -57,16 +56,20 @@ public interface EssayDao {
 	/**
 	 * 分页查询文章
 	 * 
-	 * @param pageFirst
-	 *            当前页第一条数据位置
-	 * @param pageLast
-	 *            当前页最后一条数据位置
+	 * @param sql语句
+	 * 
+	 * @param currentPage
+	 *            当前页
+	 * @param everyPage
+	 *            每页显示的数量
 	 * @return
 	 */
-	public abstract List<Essay> fetchEssayByPage(int pageFirst, int pageLast);
-	
+	public abstract List<Essay> fetchEssayByPage(String sql, int currentPage,
+			int everyPage);
+
 	/**
 	 * 获取文章总数量
+	 * 
 	 * @return
 	 */
 	public abstract int fetchEssayCount();

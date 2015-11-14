@@ -11,6 +11,9 @@ import java.util.List;
 import com.application.dao.EssayDao;
 import com.application.entity.Essay;
 import com.application.util.DBUtil;
+import com.application.util.PageUtil;
+import com.application.util.Page;
+import com.application.util.PrintUtil;
 
 public class EssayDaoImpl implements EssayDao {
 
@@ -22,34 +25,47 @@ public class EssayDaoImpl implements EssayDao {
 	private DBUtil dbUtil = DBUtil.getDBUtil();
 
 	public static void main(String[] args) {
-		// Essay essay = new Essay();
-		// essay.setUser("3");
-		// essay.setTitle("3");
-		// essay.setClick(0);
-		//
-		// SimpleDateFormat format = new
-		// SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		// String createDate = format.format(System.currentTimeMillis());
-		// essay.setIssueData(createDate);
-		// essay.setWriter("writer");
-		// essay.setColor("red");
-		// essay.setDescription("Description");
-		// essay.setKeywords("keyword");
-		// essay.setBody("body");
-		//
-		// EssayDao essayDao = new EssayDaoImpl();
-		// System.out.println(essayDao.addEssay(essay));
+//		 Essay essay = new Essay();
+//		 essay.setUser("4");
+//		 essay.setTitle("4");
+//		 essay.setClick(0);
+//		
+//		 SimpleDateFormat format = new
+//		 SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		 String createDate = format.format(System.currentTimeMillis());
+//		 essay.setIssueData(createDate);
+//		 essay.setWriter("writer");
+//		 essay.setColor("red");
+//		 essay.setDescription("Description");
+//		 essay.setKeywords("keyword");
+//		 essay.setBody("body");
+//		
+//		 EssayDao essayDao = new EssayDaoImpl();
+//		 System.out.println(essayDao.addEssay(essay));
 
 		// int id = 2;
 		// EssayDao essayDao = new EssayDaoImpl();
 		// System.out.println(essayDao.fetchEssayById(2));
 
-		int currentPage = 1;
-		int everPage = 2;
-		EssayDao essayDao = new EssayDaoImpl();
+//		int currentPage = 2;
+//		int everyPage = 1;
+//		 
+//		EssayDao essayDao = new EssayDaoImpl();
+//		int totalPage = essayDao.fetchEssayCount();
+//		int showNumber = 1;
+////		System.out.println(essayDao.fetchEssayCount());
+//		
+//		Page page = PageUtil.createPage(currentPage, everyPage, totalPage, showNumber);
+//		PrintUtil.printUtil(page);
+//		int pageFirst = new PageUtil().currentFirstPage(currentPage, everyPage);
+//		int pageLast = new PageUtil().currentLastPage(currentPage, everyPage);
+//		
+//		
+//		String sql = "select * from essay order by id desc limit ?, ?";
+//		List<Essay> tempList = essayDao.fetchEssayByPage(sql, currentPage - 1, everyPage);
+//		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~start select" + tempList.size());
+//		PrintUtil.printUtil(tempList);
 		
-		System.out.println(essayDao.fetchEssayCount());
-
 	}
 
 	public int addEssay(Essay essay) {
@@ -141,21 +157,17 @@ public class EssayDaoImpl implements EssayDao {
 		return 0;
 	}
 
-	public List<Essay> fetchEssayByPage(int pageFirst, int pageLast) {
+	public List<Essay> fetchEssayByPage(String sql, int currentPage, int everyPage) {
 		List<Essay> tempEssayList = null;
 		con = dbUtil.getCon();
-		sql = "select * from"
-				+ " (select rownum as r, t.*"
-				+ " (select * from essay order by id desc) a where rownumber <= ?)"
-				+ " where r < ?";
 		try {
 			pre = con.prepareStatement(sql);
-			pre.setInt(1, pageLast);
-			pre.setInt(2, pageFirst);
+			pre.setInt(1, currentPage);
+			pre.setInt(2, everyPage);
 
 			res = pre.executeQuery();
+			tempEssayList = new ArrayList<Essay>();
 			while (res.next()) {
-				tempEssayList = new ArrayList<Essay>();
 				tempEssayList.add(getEssay(res));
 			}
 		} catch (SQLException e) {

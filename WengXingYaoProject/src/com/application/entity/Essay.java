@@ -19,7 +19,6 @@ public class Essay implements Serializable {
 	private String title;
 	// 点击次数
 	private int click; 
-	
 	// 发布时间
 	private String issueData;
 	// 作者
