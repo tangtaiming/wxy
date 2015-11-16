@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	
+	<a href="/e/essays">进入文章页面</a>
 </body>
 </html>

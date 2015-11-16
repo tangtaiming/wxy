@@ -60,8 +60,7 @@ public class EssayDaoImpl implements EssayDao {
 //		int pageFirst = new PageUtil().currentFirstPage(currentPage, everyPage);
 //		int pageLast = new PageUtil().currentLastPage(currentPage, everyPage);
 //		
-//		
-//		String sql = "select * from essay order by id desc limit ?, ?";
+//		String sql = "select * from essay where issueData <= '2015-11-14 08:13:30' order by id desc limit ?, ?";
 //		List<Essay> tempList = essayDao.fetchEssayByPage(sql, currentPage - 1, everyPage);
 //		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~start select" + tempList.size());
 //		PrintUtil.printUtil(tempList);

@@ -15,22 +15,16 @@ public class EssayBizImpl implements EssayBiz {
 		return essayDao.addEssay(essay);
 	}
 
-	public List<Essay> fetchEssayPage(int currentPage, int everyPage, int totalCurrent) {
-		int selectCount = essayDao.fetchEssayCount();	//获取最新文章数量
+	// totalCurrent 现在参数处于无用创造 为以后解决数据重叠问题 做准备
+	public List<Essay> fetchEssayPage(int currentPage, int everyPage,
+			int totalCurrent) {
 		String sql = null;
-		if (selectCount > totalCurrent) {
-			sql = "";
-		} else {
-			sql = "select * from essay order by id limit ?, ?";
-		}
-				
-		
-		return null;
+		sql = "select * from essay order by id limit ?, ?";
+		return essayDao.fetchEssayByPage(sql, currentPage, everyPage);
 	}
 
 	public Essay fetchEssayById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return essayDao.fetchEssayById(id);
 	}
 
 }
