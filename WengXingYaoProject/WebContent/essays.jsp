@@ -1,3 +1,4 @@
+<%@page import="com.application.util.Page"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,7 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<c:forEach items="${requestScope.essayList}" var="essay" varStatus="status">
 		<div style="margin: 10px; border:1px solid #ff7300;">
 			<p> 
@@ -32,17 +32,39 @@
 			</p> 
 		</div>
 	</c:forEach>
-	<c:if test="${requestScope.essayList.size() > 2}">
+	<c:if test="${requestScope.essayList.size() >= 1}">
 		<div style="border:1px solid #cccccc;">
-			<a href="">首页</a>
-			<a href="">上一页</a>
-			<a href="">1</a>
-			<a href="">2</a>
-			<a href="">3</a>
-			<a href="">4</a>
-			<a href="">5</a>
-			<a href="">下一页</a>
-			<a href="">尾页</a>
+			<%-- 是否有上一页判断 --%>     
+			<c:if test="${sessionScope.page.isUpPage==true}">
+				<a href="/e/essays/1">首页</a>
+				<a href="/e/essays/${sessionScope.page.currentPage-1}">上一页</a>
+			</c:if>
+			<c:if test="${sessionScope.page.isUpPage==false}">
+				<a>首页</a>
+				<a>上一页</a>
+			</c:if>
+			
+			<%-- 显示点击翻页效果 --%>
+			
+			<%
+				//获取jsp页面的session
+				Page tempPage = (Page) session.getAttribute("page");
+				for (int x = tempPage.getCurrentPage(); x < tempPage.getCurrentPage() + 4; x++) {
+			%>
+					<a href="/e/essays/<%=x%>"><%=x%></a>				
+			<%
+				}
+			%>
+			
+			<%-- 是否有下一页判断 --%>
+			<c:if test="${sessionScope.page.isDownPage==false}">
+				<a>下一页</a>
+				<a>尾页</a>
+			</c:if>
+			<c:if test="${sessionScope.page.isDownPage==true}">
+				<a href="/e/essays/${sessionScope.page.currentPage+1}">下一页</a>
+				<a href="/e/essays/${sessionScope.page.totalPage}">尾页</a>
+			</c:if>
 		</div>
 	</c:if>
 </body>

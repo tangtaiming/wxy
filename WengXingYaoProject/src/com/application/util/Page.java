@@ -13,12 +13,12 @@ public class Page {
 	private Integer everyPage; // 每页显示数量
 	private Integer totalCurrent; // 总记录数
 	private Integer showNumber; // 显示分页数量
-	private boolean isUpPage; // 是否有上一页
-	private boolean isDownPage; // 是否有下一页
+	private Boolean isUpPage; // 是否有上一页
+	private Boolean isDownPage; // 是否有下一页
 
 	public Page(Integer currentPage, Integer totalPage, Integer everyPage,
-			Integer totalCurrent, Integer showNumber, boolean isUpPage,
-			boolean isDownPage) {
+			Integer totalCurrent, Integer showNumber, Boolean isUpPage,
+			Boolean isDownPage) {
 		this.currentPage = currentPage;
 		this.totalPage = totalPage;
 		this.everyPage = everyPage;
@@ -68,19 +68,19 @@ public class Page {
 		this.showNumber = showNumber;
 	}
 
-	public boolean isUpPage() {
+	public Boolean getIsUpPage() {
 		return isUpPage;
 	}
 
-	public void setUpPage(boolean isUpPage) {
+	public void setIsUpPage(Boolean isUpPage) {
 		this.isUpPage = isUpPage;
 	}
 
-	public boolean isDownPage() {
+	public Boolean getIsDownPage() {
 		return isDownPage;
 	}
 
-	public void setDownPage(boolean isDownPage) {
+	public void setIsDownPage(Boolean isDownPage) {
 		this.isDownPage = isDownPage;
 	}
 
