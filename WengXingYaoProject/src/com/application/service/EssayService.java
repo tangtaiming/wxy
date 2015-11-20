@@ -1,5 +1,6 @@
 package com.application.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,20 +50,23 @@ public class EssayService {
 		Integer currentPage = 1;
 		// 每页显示 5
 		int everyPage = Number.ONE;
-		// 显示****
-		int showNumber = Number.FIVE;
 		// 获取数量
 		int totalCurrent = essayDao.fetchEssayCount();
-		Page page = PageUtil.createPage(currentPage, everyPage, totalCurrent,
-				showNumber);
-
+		
+		List<Integer> showPageNumber = new ArrayList<Integer>();
+		PageUtil pageUtil = PageUtil.getPageUtil();
+		Page page = pageUtil.createPage(currentPage, everyPage, totalCurrent);
+		
+		showPageNumber = pageUtil.getPageNumberTwo(currentPage, page.getTotalPage(), showPageNumber);
+		page.setPageNumber(showPageNumber);
+		
 		List<Essay> essayList = essayBiz.fetchEssayPage(currentPage - 1,
 				everyPage, 0);
 		PrintUtil.printUtil(essayList);
+		PrintUtil.printUtil(page);
+		
 		data.put("essayList", essayList);
 		data.put("page", page);
-		PrintUtil.printUtil(page);
-
 		return "essays";
 	}
 
@@ -76,11 +80,17 @@ public class EssayService {
 			Map<String, Object> data) {
 		// 获取Session中的数据
 		Page page = (Page) data.get("page");
+
 		//修改当前页
 		page.setCurrentPage(currentPage);  			
 		// 创建一个分页
-		page = PageUtil.createPage(page.getCurrentPage(), page.getEveryPage(),
-				page.getTotalCurrent(), page.getShowNumber());
+		PageUtil pageUtil = PageUtil.getPageUtil();
+		List<Integer> showPageNumber = new ArrayList<Integer>();
+		showPageNumber = pageUtil.getPageNumberTwo(page.getCurrentPage(), page.getTotalPage(), page.getPageNumber());
+		page = pageUtil.createPage(page.getCurrentPage(), page.getEveryPage(),
+				page.getTotalCurrent());
+		
+		page.setPageNumber(showPageNumber);
 		// 存储到session中
 		data.put("page", page);
 		
@@ -89,7 +99,8 @@ public class EssayService {
 				page.getCurrentPage() - 1, page.getEveryPage(),
 				page.getTotalCurrent());
 		data.put("essayList", essayList);
-
+		PrintUtil.printUtil(page);
 		return "essays";
 	}
+
 }

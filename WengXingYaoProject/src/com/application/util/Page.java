@@ -1,5 +1,7 @@
 package com.application.util;
 
+import java.util.List;
+
 /**
  * 分页
  * 
@@ -12,18 +14,19 @@ public class Page {
 	private Integer totalPage; // 总页数
 	private Integer everyPage; // 每页显示数量
 	private Integer totalCurrent; // 总记录数
-	private Integer showNumber; // 显示分页数量
 	private Boolean isUpPage; // 是否有上一页
 	private Boolean isDownPage; // 是否有下一页
+	private List<Integer> pageNumber; // 显示页码
+
+	public Page() {
+	}
 
 	public Page(Integer currentPage, Integer totalPage, Integer everyPage,
-			Integer totalCurrent, Integer showNumber, Boolean isUpPage,
-			Boolean isDownPage) {
+			Integer totalCurrent, Boolean isUpPage, Boolean isDownPage) {
 		this.currentPage = currentPage;
 		this.totalPage = totalPage;
 		this.everyPage = everyPage;
 		this.totalCurrent = totalCurrent;
-		this.showNumber = showNumber;
 		this.isUpPage = isUpPage;
 		this.isDownPage = isDownPage;
 	}
@@ -60,14 +63,6 @@ public class Page {
 		this.totalCurrent = totalCurrent;
 	}
 
-	public Integer getShowNumber() {
-		return showNumber;
-	}
-
-	public void setShowNumber(Integer showNumber) {
-		this.showNumber = showNumber;
-	}
-
 	public Boolean getIsUpPage() {
 		return isUpPage;
 	}
@@ -82,6 +77,14 @@ public class Page {
 
 	public void setIsDownPage(Boolean isDownPage) {
 		this.isDownPage = isDownPage;
+	}
+
+	public List<Integer> getPageNumber() {
+		return pageNumber;
+	}
+
+	public void setPageNumber(List<Integer> pageNumber) {
+		this.pageNumber = pageNumber;
 	}
 
 }

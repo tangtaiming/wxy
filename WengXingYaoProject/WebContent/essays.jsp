@@ -45,16 +45,11 @@
 			</c:if>
 			
 			<%-- 显示点击翻页效果 --%>
+
+			<c:forEach items="${sessionScope.page.pageNumber}" var="pn">
+				<a href="/e/essays/${pn}">${pn}</a>
+			</c:forEach>
 			
-			<%
-				//获取jsp页面的session
-				Page tempPage = (Page) session.getAttribute("page");
-				for (int x = tempPage.getCurrentPage(); x < tempPage.getCurrentPage() + 4; x++) {
-			%>
-					<a href="/e/essays/<%=x%>"><%=x%></a>				
-			<%
-				}
-			%>
 			
 			<%-- 是否有下一页判断 --%>
 			<c:if test="${sessionScope.page.isDownPage==false}">

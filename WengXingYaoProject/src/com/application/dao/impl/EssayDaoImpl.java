@@ -25,23 +25,23 @@ public class EssayDaoImpl implements EssayDao {
 	private DBUtil dbUtil = DBUtil.getDBUtil();
 
 	public static void main(String[] args) {
-//		 Essay essay = new Essay();
-//		 essay.setUser("4");
-//		 essay.setTitle("4");
-//		 essay.setClick(0);
-//		
-//		 SimpleDateFormat format = new
-//		 SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		 String createDate = format.format(System.currentTimeMillis());
-//		 essay.setIssueData(createDate);
-//		 essay.setWriter("writer");
-//		 essay.setColor("red");
-//		 essay.setDescription("Description");
-//		 essay.setKeywords("keyword");
-//		 essay.setBody("body");
-//		
-//		 EssayDao essayDao = new EssayDaoImpl();
-//		 System.out.println(essayDao.addEssay(essay));
+		 Essay essay = new Essay();
+		 essay.setUser("6");
+		 essay.setTitle("6");
+		 essay.setClick(0);
+		
+		 SimpleDateFormat format = new
+		 SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		 String createDate = format.format(System.currentTimeMillis());
+		 essay.setIssueData(createDate);
+		 essay.setWriter("writer");
+		 essay.setColor("red");
+		 essay.setDescription("Description");
+		 essay.setKeywords("keyword");
+		 essay.setBody("body");
+		
+		 EssayDao essayDao = new EssayDaoImpl();
+		 System.out.println(essayDao.addEssay(essay));
 
 		// int id = 2;
 		// EssayDao essayDao = new EssayDaoImpl();
