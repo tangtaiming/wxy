@@ -14,7 +14,7 @@
 			<p> 
 					id : ${essay.id}
 				<span style="margin: 0px 5px 0px 5px; padding:5px;"></span>
-					title : ${essay.title}
+					title : <a href="/e/essay/${essay.id}" target="_blank">${essay.title}</a>
 				<span style="margin: 0px 5px 0px 5px; padding:5px;"></span>
 					click : ${essay.click}
 				<span style="margin: 0px 5px 0px 5px; padding:5px;"></span>

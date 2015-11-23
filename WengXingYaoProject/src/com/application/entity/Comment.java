@@ -3,7 +3,7 @@ package com.application.entity;
 import java.io.Serializable;
 
 /**
- * 评论实体类dddd
+ * 评论实体类
  * 
  * @author 唐泰明
  * @version 1.0
@@ -15,7 +15,7 @@ public class Comment implements Serializable {
 	// id
 	private int id;
 	// 文章id
-	private String essayId;
+	private int essayId;
 	
 	// 评论时间
 	private String createData;
@@ -32,11 +32,11 @@ public class Comment implements Serializable {
 		this.id = id;
 	}
 
-	public String getEssayId() {
+	public int getEssayId() {
 		return essayId;
 	}
 
-	public void setEssayId(String essayId) {
+	public void setEssayId(int essayId) {
 		this.essayId = essayId;
 	}
 
