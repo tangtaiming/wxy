@@ -5,8 +5,17 @@
 	<div>没有评论</div>
 </c:if>
 <c:if test="${commentList.size()!=0}">
+	<style type="text/css">
+		.comment-show > span > * {
+			padding:0px;
+			margin:0px;
+			border:0px;
+			font-size:12px;
+			font-weight:500;
+		}
+	</style>
 	<c:forEach items="${requestScope.commentList}" var="comment">
-		<div>
+		<div class="comment-show">
 			<span style="margin:0px 5px;">${comment.id}</span>
 			<span style="margin:0px 5px;">${comment.createData}</span>
 			<span style="margin:0px 5px;">${comment.content}</span>

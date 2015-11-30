@@ -35,30 +35,29 @@
 	<c:if test="${requestScope.essayList.size() >= 1}">
 		<div style="border:1px solid #cccccc;">
 			<%-- 是否有上一页判断 --%>     
-			<c:if test="${sessionScope.page.isUpPage==true}">
+			<c:if test="${sessionScope.essayPage.previous==true}">
 				<a href="/e/essays/1">首页</a>
-				<a href="/e/essays/${sessionScope.page.currentPage-1}">上一页</a>
+				<a href="/e/essays/${sessionScope.essayPage.pageNumber-1}">上一页</a>
 			</c:if>
-			<c:if test="${sessionScope.page.isUpPage==false}">
+			<c:if test="${sessionScope.essayPage.previous==false}">
 				<a>首页</a>
 				<a>上一页</a>
 			</c:if>
 			
 			<%-- 显示点击翻页效果 --%>
-
-			<c:forEach items="${sessionScope.page.pageNumber}" var="pn">
+			<c:forEach items="${requestScope.showPage}" var="pn">
 				<a href="/e/essays/${pn}">${pn}</a>
 			</c:forEach>
 			
 			
 			<%-- 是否有下一页判断 --%>
-			<c:if test="${sessionScope.page.isDownPage==false}">
+			<c:if test="${sessionScope.essayPage.next==false}">
 				<a>下一页</a>
 				<a>尾页</a>
 			</c:if>
-			<c:if test="${sessionScope.page.isDownPage==true}">
-				<a href="/e/essays/${sessionScope.page.currentPage+1}">下一页</a>
-				<a href="/e/essays/${sessionScope.page.totalPage}">尾页</a>
+			<c:if test="${sessionScope.essayPage.next==true}">
+				<a href="/e/essays/${sessionScope.essayPage.pageNumber+1}">下一页</a>
+				<a href="/e/essays/${sessionScope.essayPage.totalPage}">尾页</a>
 			</c:if>
 		</div>
 	</c:if>

@@ -19,7 +19,7 @@
 		var options = {
 				type : 'post',
 				success : function(data) {
-					alert("yes" + data);
+					$("#comment-list").html(data);
 				}
 			};
 		

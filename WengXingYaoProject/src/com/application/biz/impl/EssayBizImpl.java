@@ -20,7 +20,7 @@ public class EssayBizImpl implements EssayBiz {
 			int totalCurrent) {
 		String sql = null;
 		sql = "select * from essay order by id limit ?, ?";
-		return essayDao.fetchEssayByPage(sql, currentPage, everyPage);
+		return essayDao.fetchEssayByPage(sql, currentPage - 1, everyPage);
 	}
 
 	public Essay fetchEssayById(int id) {
