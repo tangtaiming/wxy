@@ -24,30 +24,28 @@
 	<c:if test="${requestScope.commentList.size() >= 1}">
 		<div style="border:1px solid #cccccc;">
 			<%-- 是否有上一页判断 --%>     
-			<c:if test="${sessionScope.commentPage.isUpPage==true}">
-				<a href="/e/essays/1">首页</a>
-				<a href="/e/essays/${sessionScope.commentPage.currentPage-1}">上一页</a>
+			<c:if test="${sessionScope.commentPage.previous==true}">
+				<a class="cur" href="javascript:void(0)" p="1">首页</a>
+				<a class="cur" href="javascript:void(0)" p="${sessionScope.commentPage.pageNumber-1}">上一页</a>
 			</c:if>
-			<c:if test="${sessionScope.commentPage.isUpPage==false}">
+			<c:if test="${sessionScope.commentPage.previous==false}">
 				<a>首页</a>
 				<a>上一页</a>
 			</c:if>
 			
 			<%-- 显示点击翻页效果 --%>
-
-			<c:forEach items="${sessionScope.commentPage.pageNumber}" var="pn">
-				<a href="/e/essays/${pn}">${pn}</a>
+			<c:forEach items="${requestScope.showPage}" var="pn">
+				<a class="cur" href="javascript:void(0)" p="${pn}">${pn}</a>
 			</c:forEach>
 			
-			
 			<%-- 是否有下一页判断 --%>
-			<c:if test="${sessionScope.commentPage.isDownPage==false}">
+			<c:if test="${sessionScope.commentPage.next==false}">
 				<a>下一页</a>
 				<a>尾页</a>
 			</c:if>
-			<c:if test="${sessionScope.commentPage.isDownPage==true}">
-				<a href="/e/essays/${sessionScope.commentpage.currentPage+1}">下一页</a>
-				<a href="/e/essays/${sessionScope.commentpage.totalPage}">尾页</a>
+			<c:if test="${sessionScope.commentPage.next==true}">
+				<a class="cur" href="javascript:void(0)" p="${sessionScope.commentPage.pageNumber+1}">下一页</a>
+				<a class="cur" href="javascript:void(0)" p="${sessionScope.commentPage.totalPage}">尾页</a>
 			</c:if>
 		</div>
 	</c:if>

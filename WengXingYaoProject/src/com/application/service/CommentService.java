@@ -3,6 +3,8 @@ package com.application.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,8 @@ import com.application.biz.impl.CommentBizImpl;
 import com.application.dao.CommentDao;
 import com.application.dao.impl.CommentDaoImpl;
 import com.application.entity.Comment;
+import com.application.entity.Essay;
+import com.application.util.Number;
 import com.application.util.Page;
 import com.application.util.PageUtil;
 import com.application.util.PrintUtil;
@@ -31,11 +35,32 @@ import com.application.util.PrintUtil;
  */
 @Controller
 @RequestMapping(value = "/c")
-@SessionAttributes(value = { "commentPage" })
+@SessionAttributes(value = { "commentPage", "essay" })
 public class CommentService {
 
 	private CommentBiz commentBiz = new CommentBizImpl();
 	private CommentDao commentDao = new CommentDaoImpl();
+
+	// 当前页
+	private int pageNumber = Number.ONE;
+	// 总数量
+	private int totalNumber = 0;
+	// 每页显示数量
+	private int pageSize = Number.ONE;
+
+	private int pageRange = Number.TWO;
+
+	private PageUtil pageUtil = PageUtil.getPageUtil();
+
+	private Page page;
+
+	private List<Integer> tempShowPage;
+
+	private int essayId;
+
+	private List<Comment> commentList;
+
+	private Essay essay;
 
 	/**
 	 * 添加评论
@@ -46,47 +71,95 @@ public class CommentService {
 	@RequestMapping(value = "/addComment", method = RequestMethod.POST)
 	public String addComment(Comment comment, HttpServletRequest request,
 			Map<String, Object> data) {
-//
-//		comment.setCreateData(LocalDate.now().atTime(LocalTime.now())
-//				.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm:ss")));
-//		comment.setAddressIp(request.getRemoteAddr());
-//		PrintUtil.printUtil(comment);
-//		if (commentBiz.addComment(comment) == 1) {
-//			// return "redirect:/e/essay/" + comment.getEssayId();
-//			// 1. 保存后刷新评论页面。
-//			Page commentPage = (Page) data.get("commentPage");
-//			// 计算总数量
-//			Integer totalCurrent = commentDao.fetchCommentCount(comment
-//					.getEssayId());
-//			data.put("commentList", commentList);
-//			data.put("commentPage", commentPage);
-//			return "/comment";
-//		}
-
-		return "";
+		 comment.setCreateData(LocalDate.now().atTime(LocalTime.now())
+		 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm:ss")));
+		 comment.setAddressIp(request.getRemoteAddr());
+		 PrintUtil.printUtil(comment);
+		 if (commentBiz.addComment(comment) == 1) {
+			 // return "redirect:/e/essay/" + comment.getEssayId();
+			 // 1. 保存后刷新评论页面。
+			 essayId = comment.getEssayId();
+			 //从session 里面获取评论当前页
+			 pageNumber = ((Page) data.get("commentPage")).getPageNumber();
+			 initCommentPage(data);
+			 initCommentDataPage(data);
+			 
+			 return "/comment";
+		 }
+		return "error";
 	}
 
+	/**
+	 * 评论翻页
+	 * 
+	 * @param currentPage
+	 * @param essayId
+	 * @param data
+	 * @return
+	 */
 	@RequestMapping(value = "/commentPage", method = RequestMethod.GET)
 	public String commentPge(
 			@RequestParam(value = "currentPage", defaultValue = "1") Integer currentPage,
-			@RequestParam(value = "essayId", defaultValue = "1") Integer essayId,
 			Map<String, Object> data) {
-//
-//		// 获取评论分页
-//		Page commentPage = (Page) data.get("commentPage");
-//		PageUtil pageUtil = PageUtil.getPageUtil();
-//
-//		List<Integer> showNumber = pageUtil.getPageNumberTwo(currentPage,
-//				commentPage.getTotalPage(), commentPage.getPageNumber());
-//		pageUtil.createPage(currentPage, commentPage.getEveryPage(),
-//				commentPage.getTotalCurrent());
-//		List<Comment> commentList = commentBiz.fetchComment(
-//				commentPage.getCurrentPage() - 1, commentPage.getEveryPage(),
-//				essayId);
-//
-//		data.put("commentList", commentList);
-//		data.put("commentPage", commentPage);
+
+		essay =  (Essay) data.get("essay");
+		essayId = essay.getId();
+		pageNumber = currentPage;
+		
+		initCommentPage(data);
+		initCommentDataPage(data);
 		return "/comment";
+		
+	}
+
+	/**
+	 * 初始化 评论数据
+	 * 
+	 * @param data
+	 */
+	public void initCommentDataPage(Map<String, Object> data) {
+		if (data == null) {
+			data = new HashMap<String, Object>();
+		}
+
+		commentList = commentBiz.fetchComment(page.getPageNumber(),
+				page.getPageSize(), essayId);
+		if (commentList == null) {
+			commentList = new ArrayList<Comment>();
+		}
+		data.put("commentList", commentList);
+	}
+
+	/**
+	 * 初始化 评论分页
+	 * 
+	 * @param data
+	 */
+	public void initCommentPage(Map<String, Object> data) {
+		if (data == null) {
+			data = new HashMap<String, Object>();
+		}
+		// 总数量
+		totalNumber = commentDao.fetchCommentCount(essayId);
+		// 设置每页显示数量
+		pageSize = Number.TWO;
+		// 设置当前页前后显示数量
+		pageRange = Number.ONE;
+		// --- commentPage
+		page = pageUtil
+				.createPage(pageNumber, pageSize, totalNumber, pageRange);
+
+		// --- showPage
+		tempShowPage = new ArrayList<Integer>();
+		for (int x = page.getRangeStart(); x <= page.getRangeEnd(); x++) {
+			tempShowPage.add(x);
+		}
+		data.put("showPage", tempShowPage);
+		data.put("commentPage", page);
+		System.out
+				.println("----------------initCommentPage()-----------------");
+		PrintUtil.printUtil(page);
+
 	}
 
 }

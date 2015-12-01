@@ -21,9 +21,20 @@ public class CommentBizImpl implements CommentBiz {
 	}
 
 	public List<Comment> fetchComment(Integer currentPage, Integer everyPage, Integer essayId) {
-													 
+											
+		int startPlace = initStartPlace(currentPage, everyPage);
 		String sql = "select * from comment where essayId = ? order by createData desc limit ?, ?";
-		return commentDao.fetchComment(sql, currentPage, everyPage, essayId);
+		return commentDao.fetchComment(sql, startPlace, everyPage, essayId);
+	}
+	
+	/**
+	 * 初始化查询起始点位置
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	public int initStartPlace(Integer currentPage, Integer pageSize) {
+		return (currentPage - 1) * pageSize;
 	}
 
 }

@@ -19,14 +19,38 @@
 		var options = {
 				type : 'post',
 				success : function(data) {
-					$("#comment-list").html(data);
+					$("#comment-list").empty().append(data);
+					initCommentEvent();
 				}
 			};
 		
 		$("#addComment").click(function() {
 			$("#commentForm").ajaxSubmit(options);
 		});
+
+		initCommentEvent();
 	});
+
+	function ajaxCommentDataPage(_this) {
+		var _element = _this.attr("p");
+		$.ajax({
+			url: "/c/commentPage?currentPage=" + _element,
+			type: "get",
+			success: function(data) {
+				$("#comment-list").empty().append(data);
+				initCommentEvent();
+			}
+		});
+	}
+
+	/**
+	 * 评论列表翻页添加click事件
+	 */
+	function initCommentEvent() {
+		$("#comment-list .cur").on("click", function() {
+			ajaxCommentDataPage($(this));
+		});	
+	}
 </script>
 </head>
 <body>
