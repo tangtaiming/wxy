@@ -23,6 +23,10 @@ public class BlessingBizImpl implements BlessingBiz {
 		return blessingDao.fetchBlessingByPage(sql, startPoint, pageSize);
 	}
 	
+	public int fetchBlessingCount() {
+		return blessingDao.fetchBlessingCount();
+	}
+	
 	/**
 	 * 计算起始点
 	 * @param pageNumber  当前页

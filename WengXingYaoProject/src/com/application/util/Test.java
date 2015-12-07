@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
-import org.junit.BeforeClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -41,12 +40,11 @@ public class Test {
 		System.out.println(us.register(user));
 	}
 
-	@org.junit.Test
 	public void addBlessing() {
 		BlessingDao blessingDao = new BlessingDaoImpl();
 		Blessing blessing = new Blessing();
-		blessing.setBleContent("希望你们幸福");
-		blessing.setBleIp("192.168.220.41");
+		blessing.setBleContent("张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号张家港市沙州西路109号");
+		blessing.setBleIp("192.168.220.44");
 		blessing.setBleName("红孩儿");
 
 		String bleTime = LocalTime.now().atDate(LocalDate.now())
@@ -57,20 +55,17 @@ public class Test {
 		System.out.println(blessingDao.addBlessing(blessing));
 	}	
 
-	@org.junit.Test
 	public void fetchUser() {
 		// User user = new User();
 		// System.out.println(userDao.fetchIsUserTrue("wengxingyao1111"));
 	}
 
-	@org.junit.Test
 	public void loginUser() {
 		// User user = new User();
 		// System.out.println(userDao.fetchUser("tangtaiming1",
 		// "Tangtaiming123"));
 	}
 
-	@org.junit.Test
 	public void deleteUser() {
 		// userDao.deleteUser("ttttt");
 	}

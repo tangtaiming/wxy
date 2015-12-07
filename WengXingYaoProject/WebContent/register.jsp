@@ -18,14 +18,6 @@
 	<script src="<%=basePath %>js/jquery.js"></script>
 	<script src="<%=basePath %>js/jquery.form.js"></script>
 	<script type="application/x-javascript">
-	 	addEventListener("load", function() { 
-		 		setTimeout(hideURLbar, 0); 
-			}, false); 
-
-		function hideURLbar(){ 
-			window.scrollTo(0,1); 
-		} 
-
 		//登录注册 action 提交地址 切换
 		function myFunction(thisObj) {
 			var _form = $("#form");

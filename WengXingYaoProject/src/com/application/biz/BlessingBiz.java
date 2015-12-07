@@ -21,4 +21,10 @@ public interface BlessingBiz {
 	 */
 	public abstract List<Blessing> fetchBlessingByPage(int pageNumber, int pageSize);
 	
+	/**
+	 * ¼ÆËã×£¸£ÊıÁ¿
+	 * @return
+	 */
+	public abstract int fetchBlessingCount();
+	
 }

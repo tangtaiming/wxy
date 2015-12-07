@@ -28,5 +28,11 @@ public interface BlessingDao {
 	 */
 	public abstract List<Blessing> fetchBlessingByPage(String sql,
 			int startPoint, int pageSize);
+	
+	/**
+	 * ¼ÆËã×£¸£ÊýÁ¿
+	 * @return
+	 */
+	public abstract int fetchBlessingCount();
 
 }

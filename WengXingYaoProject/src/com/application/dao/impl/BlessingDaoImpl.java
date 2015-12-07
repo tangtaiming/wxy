@@ -59,7 +59,7 @@ public class BlessingDaoImpl implements BlessingDao {
 			pre.setInt(1, startPoint);
 			pre.setInt(2, pageSize);
 			res = pre.executeQuery();
-			
+
 			while (res.next()) {
 				Blessing tempB = new Blessing();
 				getBlessing(tempB, res);
@@ -74,14 +74,31 @@ public class BlessingDaoImpl implements BlessingDao {
 		}
 		return blessingList;
 	}
-	
-	/**
-	 * 设置祝福值
-	 * @param blessing
-	 * @param res
-	 * @throws SQLException 
-	 */
-	private void getBlessing(Blessing blessing, ResultSet res) throws SQLException {
+
+	public int fetchBlessingCount() {
+		int count = 0; // 数量
+		con = dbUtil.getCon();
+		sql = "select count(*) from Blessing";
+
+		try {
+			pre = con.prepareStatement(sql);
+			res = pre.executeQuery();
+			if (res.next()) {
+				count = res.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out
+					.println("-------------------计算祝福数量‘异常’-------------------");
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre, res);
+		}
+
+		return count;
+	}
+
+	private void getBlessing(Blessing blessing, ResultSet res)
+			throws SQLException {
 		if (blessing == null) {
 			blessing = new Blessing();
 		}
@@ -92,7 +109,6 @@ public class BlessingDaoImpl implements BlessingDao {
 		blessing.setBleTime(res.getString("bleTime"));
 		blessing.setPraise(res.getInt("praise"));
 		blessing.setPraiseNumber(res.getInt("praiseNumber"));
-	} 
-
+	}
 
 }

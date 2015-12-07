@@ -13,6 +13,19 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
+	<!-- 解决乱码问题 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters" ref="messageConverters"></property>
+	</bean>
+	<bean id="messageConverters" class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes" ref="supportedMediaTypes"/>
+	</bean>
+	<bean id="supportedMediaTypes" class="org.springframework.http.MediaType">
+		<constructor-arg index="0" value="text" />
+		<constructor-arg index="1" value="json" />
+		<constructor-arg index="2" value="UTF-8" />
+	</bean>
+	
 	<mvc:default-servlet-handler/>
 	
 	<mvc:annotation-driven>
