@@ -37,7 +37,7 @@ public class Test {
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		user.setCreateData(format.format(Calendar.getInstance().getTime()));
-		System.out.println(us.register(user));
+//		System.out.println(us.register(user));
 	}
 
 	public void addBlessing() {

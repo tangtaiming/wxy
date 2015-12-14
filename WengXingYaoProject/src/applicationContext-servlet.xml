@@ -45,5 +45,11 @@
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
+	<!-- 静态文件 -->
+	<mvc:resources location="/img/" mapping="/img/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/font/" mapping="/font/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
 		
 </beans>

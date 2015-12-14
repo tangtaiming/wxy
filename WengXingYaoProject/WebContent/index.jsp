@@ -5,12 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="css/myCss.css" rel="stylesheet" type="text/css" />
-<link href="css/font-awesome.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/myJs.js"></script>
-<script type="text/javascript" src="js/myScroll.js"></script>
+<link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/css/myCss.css" rel="stylesheet" type="text/css" />
+<link href="/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/myJs.js"></script>
+<script type="text/javascript" src="/js/myScroll.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		init();
@@ -48,7 +48,7 @@
                     </div>
                     <div id="ifocus_btn">
                         <ul>
-                            <li class="current" id="p0"><img src="img/center.jpg" alt=""/></li>
+                            <li class="current" id="p0"><img src="/img/center.jpg" alt=""/></li>
                             <li id="p1"><img src="/img/btn_02.jpg" alt="" /></li>
                             <li id="p2"><img src="/img/btn_03.jpg" alt="" /></li>
                             <li id="p3"><img src="/img/btn_04.jpg" alt="" /></li>
