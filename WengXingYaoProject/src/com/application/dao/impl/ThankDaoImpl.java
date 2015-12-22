@@ -21,7 +21,6 @@ public class ThankDaoImpl implements ThankDao {
 
 	private String sql;
 
-	@Override
 	public boolean addThank(Thank thank) {
 
 		int isAddThank = 0;
@@ -45,7 +44,6 @@ public class ThankDaoImpl implements ThankDao {
 		return isAddThank > 0 ? true : false;
 	}
 
-	@Override
 	public boolean deleteThank(int id) {
 
 		int isDeleteThank = 0;
@@ -65,7 +63,6 @@ public class ThankDaoImpl implements ThankDao {
 		return isDeleteThank > 0 ? true : false;
 	}
 
-	@Override
 	public Thank fetchThank(int userId) {
 
 		Thank thank = null;

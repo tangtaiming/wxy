@@ -20,12 +20,10 @@ public class ThankBizImpl implements ThankBiz {
 		return thankDao.addThank(thank);
 	}
 
-	@Override
 	public boolean deleteThank(int id) {
 		return thankDao.deleteThank(id);
 	}
 
-	@Override
 	public Thank fetchThank(int userId) {
 		return thankDao.fetchThank(userId);
 	}
