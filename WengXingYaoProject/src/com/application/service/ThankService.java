@@ -18,6 +18,13 @@ public class ThankService {
 	
 	private Thank thank;
 	
+	
+	
+	/**
+	 * 前端显示感谢数据
+	 * @param data
+	 * @return
+	 */
 	@RequestMapping(value = "/showThank", method = RequestMethod.GET)
 	public String showThank(Map<String, Object> data) {
 		int creator = 1;	//创建人id

@@ -36,4 +36,16 @@ public class BlessingBizImpl implements BlessingBiz {
 		startPoint = (pageNumber - 1) * pageSize;
 	}
 
+	public Blessing fetchBlessingById(int id) {
+		return blessingDao.fetchBlessingById(id);
+	}
+
+	public boolean updateBlessing(Blessing blessing) {
+		return blessingDao.updateBlessing(blessing);
+	}
+
+	public boolean deleteBlessing(int id) {
+		return blessingDao.deleteBlessing(id);
+	}
+
 }

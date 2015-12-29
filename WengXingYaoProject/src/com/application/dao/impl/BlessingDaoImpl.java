@@ -97,7 +97,89 @@ public class BlessingDaoImpl implements BlessingDao {
 		return count;
 	}
 
-	private void getBlessing(Blessing blessing, ResultSet res)
+	public Blessing fetchBlessingById(int id) {
+
+		Blessing blessing = null;
+		con = dbUtil.getCon();
+		sql = "select * from Blessing where id = ?";
+		try {
+			pre = con.prepareStatement(sql);
+			pre.setInt(1, id);
+			res = pre.executeQuery();
+			if (res.next()) {
+				blessing = getBlessing(blessing, res);
+			}
+		} catch (SQLException e) {
+			System.out
+					.println("-------------------ID²éÑ¯×£¸£¡®Òì³£¡¯-------------------");
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre, res);
+		}
+		return blessing;
+	}
+
+	// public static void main(String[] args) {
+	// Blessing blessing = new Blessing();
+	// blessing.setId(25);
+	// blessing.setBleContent("ÎÌÎÒÏ²»¶Äã!");
+	// blessing.setBleTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+	// blessing.setBleIp("192.168.220.41");
+	// blessing.setBleName("Ò»¸öÄ¬Ä¬µÄÓÎ¿Í");
+	// blessing.setPraise(0);
+	// blessing.setPraiseNumber(0);
+	//
+	// BlessingDao blessingDao = new BlessingDaoImpl();
+	// System.out.println(blessingDao.updateBlessing(blessing));
+	// }
+
+	public boolean updateBlessing(Blessing blessing) {
+
+		boolean isUpdate = true;
+		con = dbUtil.getCon();
+		sql = "update Blessing set " + "bleContent = ?, bleTime = ?, "
+				+ "bleIp = ?, bleName = ?, " + "praise = ?, praiseNumber = ? "
+				+ "where id = ?";
+		try {
+			pre = con.prepareStatement(sql);
+			pre.setString(1, blessing.getBleContent());
+			pre.setString(2, blessing.getBleTime());
+			pre.setString(3, blessing.getBleIp());
+			pre.setString(4, blessing.getBleName());
+			pre.setInt(5, blessing.getPraise());
+			pre.setInt(6, blessing.getPraiseNumber());
+			pre.setInt(7, blessing.getId());
+			isUpdate = pre.executeUpdate() > 0 ? true : false;
+		} catch (SQLException e) {
+			System.out
+					.println("-------------------ÐÞ¸Ä×£¸£¡®Òì³£¡¯-------------------");
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre);
+		}
+		return isUpdate;
+	}
+
+	public boolean deleteBlessing(int id) {
+
+		boolean isDelete = true;
+		con = dbUtil.getCon();
+		sql = "delete from Blessing where id = ?";
+		try {
+			pre = con.prepareStatement(sql);
+			pre.setInt(1, id);
+			isDelete = pre.executeUpdate() > 0 ? true : false;
+		} catch (SQLException e) {
+			System.out
+					.println("-------------------É¾³ý×£¸£¡®Òì³£¡¯-------------------");
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre);
+		}
+		return isDelete;
+	}
+
+	private Blessing getBlessing(Blessing blessing, ResultSet res)
 			throws SQLException {
 		if (blessing == null) {
 			blessing = new Blessing();
@@ -109,6 +191,7 @@ public class BlessingDaoImpl implements BlessingDao {
 		blessing.setBleTime(res.getString("bleTime"));
 		blessing.setPraise(res.getInt("praise"));
 		blessing.setPraiseNumber(res.getInt("praiseNumber"));
+		return blessing;
 	}
 
 }

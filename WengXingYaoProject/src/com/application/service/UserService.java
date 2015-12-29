@@ -24,6 +24,8 @@ public class UserService {
 	private UserBiz userBiz = new UserBizImpl();
 	
 	private Gson gson = new Gson();
+	
+	private User loginUser;
 
 	@RequestMapping(value="/register", method = RequestMethod.GET)
 	public String inRegister(Map<String, Object> request) {
@@ -97,6 +99,33 @@ public class UserService {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Map<String, Object> request) {
 		return "/index";
+	}
+	
+	/**
+	 * 后台管理初始化页面
+	 * @param data
+	 * @return
+	 */
+	@RequestMapping(value = "/lostManager", method = RequestMethod.GET)
+	public String lostManager(Map<String, Object> data) {
+		System.out.println("~~~~~~~~~~~~~~~~indexManager");
+		if (initLoginUser(data)) {
+			return "/admin/index";
+		}
+		return "/admin/login";
+	}
+	
+	/**
+	 * 初始化登录人 状态
+	 * @return
+	 */
+	private boolean initLoginUser(Map<String, Object> data) {
+		loginUser = (User) data.get("loginUser");
+		System.out.println("~~~~~~~~~~~~~~~~~~~" + loginUser);
+		if (loginUser != null) {
+			return true;
+		} 
+		return false;
 	}
 	
 }

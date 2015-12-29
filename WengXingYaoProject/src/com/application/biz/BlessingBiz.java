@@ -15,7 +15,7 @@ public interface BlessingBiz {
 	
 	/**
 	 * 分页显示数据
-	 * @param startPoint 当前页
+	 * @param pageNumber 当前页
 	 * @param pageSize 每页显示数量
 	 * @return 
 	 */
@@ -26,5 +26,26 @@ public interface BlessingBiz {
 	 * @return
 	 */
 	public abstract int fetchBlessingCount();
+	
+	/**
+	 * ID查询祝福
+	 * @param id
+	 * @return
+	 */
+	public abstract Blessing fetchBlessingById(int id);
+	
+	/**
+	 * 修改祝福数据
+	 * @param blessing
+	 * @return
+	 */
+	public abstract boolean updateBlessing(Blessing blessing);
+	
+	/**
+	 * 根据ID删除祝福数据
+	 * @param id
+	 * @return
+	 */
+	public abstract boolean deleteBlessing(int id);
 	
 }

@@ -80,6 +80,8 @@ body,html{height:100%;}
 .green-xt{ background: #21b6b4; color: #fff;}
 .green-int{ background: #21b6b4; color: #fff; padding: 6px 20px; border: none; border-radius: 8px; font-size: 14px;}
 .yellow-int{ background: #ffb849; color: #fff; padding: 6px 20px; border: none; border-radius: 8px; font-size: 14px;}
+input.err,input.err:focus{color:#900;border-color:#E06341;background:#FFEFEC;box-shadow:0 0 5px #E06341;}
+textarea.err,textarea.err:focus{color:#900;border-color:#E06341;background:#FFEFEC;box-shadow:0 0 5px #E06341;}
 
 /* 编辑提交表单样式 */
 .xt-form-table { margin:20px; border:1px solid #dcdcdc; }
@@ -88,4 +90,4 @@ body,html{height:100%;}
 .xt-form-table tr td.entity-property { margin:6px 30px; padding: 16px 8px; text-align:center; }
 .xt-form-table tr td.entity-property label { width:50px; display:block; width:100%; }
 .xt-form-table td.submit input { margin:6px 60px; }
-.xt-form-table td input[type="text"], .xt-form-table td textarea { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1) inset; border:1px solid #e6e6e6; font-size:12px; }
+.xt-form-table td input[type="text"], .xt-form-table td textarea { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1) inset; border: 1px solid #cececf; font-size:12px; padding:7px 11px; font-size:14px; }

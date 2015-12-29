@@ -11,9 +11,6 @@ import java.util.List;
 import com.application.dao.EssayDao;
 import com.application.entity.Essay;
 import com.application.util.DBUtil;
-import com.application.util.PageUtil;
-import com.application.util.Page;
-import com.application.util.PrintUtil;
 
 public class EssayDaoImpl implements EssayDao {
 

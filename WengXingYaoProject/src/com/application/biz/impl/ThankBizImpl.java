@@ -28,4 +28,8 @@ public class ThankBizImpl implements ThankBiz {
 		return thankDao.fetchThank(userId);
 	}
 
+	public boolean updateThank(Thank thank) {
+		return thankDao.updateThank(thank);
+	}
+
 }

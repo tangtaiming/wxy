@@ -25,4 +25,11 @@ public interface ThankDao {
 	 */
 	public abstract Thank fetchThank(int userId);
 	
+	/**
+	 * ÐÞ¸Ä¸ÐÐ»
+	 * @param thank
+	 * @return
+	 */
+	public abstract boolean updateThank(Thank thank);
+	
 }

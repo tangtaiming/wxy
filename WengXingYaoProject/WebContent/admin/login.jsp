@@ -27,7 +27,7 @@
 					$("#js-mail_pwd_ipt").addClass("text-error");
 				}
 				if (status == 999) {
-					location.href = "/user/manager";
+					window.location.href = "/user/lostManager";
 				}
 			}
 		};
