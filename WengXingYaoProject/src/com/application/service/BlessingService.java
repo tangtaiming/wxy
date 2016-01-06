@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,11 +61,14 @@ public class BlessingService {
 	public String blessingEdit(Blessing blessing, Map<String, Object> data) {
 		//查询数据 并且组装数据
 		Blessing sBlessing = blessingBiz.fetchBlessingById(blessing.getId());
-		sBlessing.setBleName(blessing.getBleName());
-		sBlessing.setBleContent(blessing.getBleContent());
-		if (blessingBiz.updateBlessing(sBlessing)) {
-			return "redirect:/b/blessingManager";
+		if (sBlessing != null) {
+			sBlessing.setBleName(blessing.getBleName());
+			sBlessing.setBleContent(blessing.getBleContent());
+			if (blessingBiz.updateBlessing(sBlessing)) {
+				return "redirect:/b/blessingManager";
+			}
 		}
+		
 		return "redirect:/b/blessingEdit/" + blessing.getId();
 	}
 	

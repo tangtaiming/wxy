@@ -85,4 +85,8 @@ public class UserBizImpl implements UserBiz {
 		this.userDao = userDao;
 	}
 
+	public User fetchUserById(int id) {
+		return userDao.fetchUserById(id);
+	}
+
 }

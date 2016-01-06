@@ -1,5 +1,7 @@
 package com.application.dao;
 
+import java.util.List;
+
 import com.application.entity.User;
 
 /**
@@ -46,5 +48,18 @@ public interface UserDao {
 	 * @return 根据返回的值判断成功或者失败，错误的情况
 	 */
 	public abstract int deleteUser(String userName);
+	
+	/**
+	 * id 查询用户是否存在
+	 * @param id
+	 * @return
+	 */
+	public abstract User fetchUserById(int id);
+	
+	/**
+	 * 查询所有 用户
+	 * @return
+	 */
+	public abstract List<User> fetchUser();
 
 }

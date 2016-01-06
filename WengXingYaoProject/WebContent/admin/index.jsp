@@ -92,7 +92,7 @@ function show_menuC(){
 	<div class="left01">
 		<div class="left03_right"></div>
 		<div class="left01_left"></div>
-		<div class="left03_c">安全退出</div>
+		<div class="left03_c"><a href="javascript:;" onclick="loginout();">安全退出</a></div>
 	</div>
 </div>
 <div class="rrcc" id="RightBox">

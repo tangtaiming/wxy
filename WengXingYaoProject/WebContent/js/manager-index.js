@@ -1,8 +1,73 @@
 // JavaScript Document
+var loginout = function() {
+	
+	function initLoginOut() {
+		window.location.href = "/user/loginOut";
+	}
+	initLoginOut();
+	
+};
+
+var editRowSaveThank = function(formId) {
+	var _from = "#" + formId;
+	function ajax() {
+		var option = {
+			type : 'post',
+			success : function(transport) {
+				changeHtml(transport);
+			},
+			error : function() {
+				alert("save edit error!");
+			}
+		};
+		if (validate()) {
+			$(_from).ajaxSubmit(option);
+		}
+	};
+	
+	//改变的页面
+	function changeHtml(response) {
+		var _changeDiv = $("#li010");
+		_changeDiv.html(response);
+	}
+	
+	ajax();
+};
+
+//目前这个对象值对 textarea对象 input对象进行验证 日后更具需求添加
+function validate() {
+	//获取表单对象
+	var _input = $("input[id*='-entity-']");	//用来获取input 对象集合
+	var _textareas = $("textarea[id*='-entity-']"); //用来获取textareas 对象集合
+	
+	//把获取的对象放入到一个对象中
+	var all_dom = _input.add(_textareas);
+	var is_zroe = true;
+	$.each(all_dom, function(num, dom) {
+		//删除对应错误提示
+		$(dom).removeClass("err");
+		//获取对象是否是必须的
+		var _must = $(dom).attr("must");
+		if (_must != "") {
+			//判断对象值
+			if ($(dom).val() == "") {
+				var _label = $("label[for='" + dom.id + "']");
+				alert(_label.html() + "不能为空!");
+				$(dom).addClass("err");
+				is_zroe = false;
+				return false;
+			}
+		}
+	});
+	return is_zroe;
+};
+
 //祝福-编辑页面保存数据
 var editRowSave = function (formId) {
 	
 	var _from = "#" + formId;
+	//截取获取对应编辑页面的ID
+//	var _value = formId.split("-")[2];
 	//改变的页面
 	function changeHtml(response) {
 		var _changeDiv = $("#li010");

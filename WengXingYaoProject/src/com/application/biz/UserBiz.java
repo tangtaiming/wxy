@@ -30,5 +30,12 @@ public interface UserBiz {
 	 * @return 注册成功 true/ 注册失败 false
 	 */
 	public abstract boolean register(User user);
+	
+	/**
+	 * id 查询用户
+	 * @param id
+	 * @return
+	 */
+	public abstract User fetchUserById(int id);
 
 }

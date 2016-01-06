@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div class="right01"><img src="/img/04.gif" /> 用户信息查询</div>
-<form id="xt-form-table-001" class="xt-form-table" action="/b/blessingEdit/${requestScope.blessing.bleName}" method="post">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="../security.jsp" %>
+<div class="right01"><img src="/img/04.gif" /> <a href="javascript:;" onclick="managerAjax('/b/blessingManager')">祝福管理</a> <img src="/img/04.gif" /> <a href="javascript:;" onclick="editRow('/b/blessingEdit', <c:out value='${blessing.id}' default='0'/>);">编辑</a></div>
+<form id="xt-form-table-001" class="xt-form-table" action="/b/blessingEdit/${requestScope.blessing.id}" method="post">
     <table cellpadding="0" cellspacing="0" border="0" bgcolor="#dcdcdc" width="100%">
         <tr>
             <th colspan="2">

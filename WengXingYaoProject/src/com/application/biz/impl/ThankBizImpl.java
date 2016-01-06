@@ -16,7 +16,6 @@ public class ThankBizImpl implements ThankBiz {
 		if (fetchThank(thank.getCreator()) != null) {
 			return false;
 		}
-		
 		return thankDao.addThank(thank);
 	}
 

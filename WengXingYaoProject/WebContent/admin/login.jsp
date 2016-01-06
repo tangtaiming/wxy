@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -37,6 +38,7 @@
 		}
 		loginFrom(form);
 	};
+
 </script>
 </head>
 <body>
@@ -48,7 +50,8 @@
 		</div>
 	</div>
 	<div class="container">
-		<form class="login-box" id="form-login" method="post" action="/user/login">
+		<c:url var="loginUrl" value="/user/login" />
+		<form class="login-box" id="form-login" method="post" action="${loginUrl}">
 			<div class="reg-slogan">
 				用户登录
             </div>

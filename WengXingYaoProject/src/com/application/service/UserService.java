@@ -3,11 +3,15 @@ package com.application.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.application.biz.UserBiz;
 import com.application.biz.impl.UserBizImpl;
@@ -26,6 +30,20 @@ public class UserService {
 	private Gson gson = new Gson();
 	
 	private User loginUser;
+	
+	/**
+	 * 登录人退出功能
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/loginOut", method = RequestMethod.GET)
+	public String loginOut(HttpServletRequest request, Map<String, Object> data) {
+		//清除登录人的session
+		HttpSession session = request.getSession();
+		session.removeAttribute("loginUser");
+		data.remove("loginUser");
+		return "/admin/login";
+	}
 
 	@RequestMapping(value="/register", method = RequestMethod.GET)
 	public String inRegister(Map<String, Object> request) {
@@ -53,7 +71,7 @@ public class UserService {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="login", method = RequestMethod.GET)
+	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String login(Map<String, Object> request) {
 		return "/admin/login";
 	}
@@ -78,6 +96,7 @@ public class UserService {
 		Gson gson = new Gson();
 		String message = gson.toJson(userMessage);
 		System.out.println(message.toString());
+		
 		request.put("message", message);
 		if (userMessage.get("user") !=null) {
 			request.put("loginUser", userMessage.get("user"));
@@ -107,12 +126,13 @@ public class UserService {
 	 * @return
 	 */
 	@RequestMapping(value = "/lostManager", method = RequestMethod.GET)
-	public String lostManager(Map<String, Object> data) {
+	public String lostManager(Map<String, Object> request) {
 		System.out.println("~~~~~~~~~~~~~~~~indexManager");
-		if (initLoginUser(data)) {
+		if (initLoginUser(request)) {
 			return "/admin/index";
 		}
 		return "/admin/login";
+		
 	}
 	
 	/**
