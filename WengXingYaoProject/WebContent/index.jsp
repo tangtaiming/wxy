@@ -126,4 +126,3 @@
 		$("#load_img_index").hide();
 	}
 </script>
-    
