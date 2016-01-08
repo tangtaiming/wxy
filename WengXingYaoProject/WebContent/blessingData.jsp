@@ -26,7 +26,34 @@
 			changeEle.attr({"custom":"show"});
 			changeEle.attr({"id":"share-show"});
 		}
+	}
+
+	function praiseAjax(thisObj) {
+		var praiseEle = $(thisObj);
+		var praiseStatus = praiseEle.attr("praisestatus");
+		var showPraise;
+		//根据赞的状态划分传入后台的值
+		if (praiseStatus == "init" || praiseStatus == "add") {
+			showPraise = new Number(praiseEle.attr("showcount")) + 1;
+		} else if (praiseStatus == "minus") {
+			showPraise = new Number(praiseEle.attr("showcount")) - 1;
+		}
+		var id = praiseEle.attr("curId");
+		var params = "id=" + id + "&upraise=" + showPraise;
+		$.ajax({
+			url: '/b/updatePraiseNumber',
+			type: 'POST',
+			data: params,
+			success:function(transport) {
+// 				alert(transport);
+				praiseEle.replaceWith(transport);
+			},
+			error:function() {
+				alert("praise error!");
+			}
+		});
 	}	
+	
 </script>
 <c:if test="${requestScope.blessingList.size() <= 0}">
    	没有数据呢！
@@ -40,8 +67,17 @@
 				</div>
 				<h1 class="ttm_dis">${blessing.bleName}</h1>
 				<h2 class="ttm_dis">${blessing.bleContent}</h2>
-			</span> <span class="ttm_span2"> 
-			<a href="#"> <i class="ttm_i_img icon-thumbs-up"></i> <i class="ttm_i_text">赞</i></a> 
+			</span> 
+			<span class="ttm_span2"> 
+			<a href="javascript:;" name="praise-${blessing.id}" curId="${blessing.id}" showcount="${blessing.praiseNumber}" praisestatus="init" onclick="praiseAjax(this)"> 
+				<i class="ttm_i_img icon-thumbs-up"></i> 
+				<i class="ttm_i_text">
+					赞
+					<c:if test="${blessing.praiseNumber!=0}">
+						(${blessing.praiseNumber})
+					</c:if>
+				</i>
+			</a> 
 			<em share="share-iocn-${blessing.id}-${blessing.hashCode()}"> 
 				<i class="ttm_i_img icon-camera"></i> 
 				<i class="ttm_i_text"> 分享 </i>

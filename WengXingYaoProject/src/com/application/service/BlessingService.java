@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ import com.application.util.Number;
 import com.application.util.Page;
 import com.application.util.PageUtil;
 import com.application.util.PrintUtil;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 
 @Controller
 @RequestMapping(value = "/b")
@@ -50,6 +52,30 @@ public class BlessingService {
 	private List<Integer> tempShowPage;
 
 	private List<Blessing> blessingList;
+	
+	@RequestMapping(value = "/updatePraiseNumber", method = RequestMethod.POST)
+	public String updatePraiseNumber(@RequestParam("id") int id, @RequestParam("upraise") int upraise, Map<String, Object> request) {
+		Blessing blessing = blessingBiz.fetchBlessingById(id);
+		if (blessing == null) {
+			return "";
+		}
+		
+		//旧的赞数量
+		int lostPraise = blessing.getPraiseNumber();
+		blessing.setPraiseNumber(upraise);
+		boolean isUpdate = blessingBiz.updateBlessing(blessing);
+		if (!isUpdate) {
+			return "";
+		}
+		//把对应状态修改成 已修改过 状态
+		if (lostPraise < upraise) {
+			request.put("upraiseStatus", "minus");
+		} else {
+			request.put("upraiseStatus", "add");
+		}
+		request.put("blessing", blessing);
+		return "/praise";
+	}
 	
 	/**
 	 * 后台祝福保存编辑

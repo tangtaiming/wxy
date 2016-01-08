@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.4.0.201310051539-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/root-spring.xml</config>
+		<config>src/spring-security.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>
