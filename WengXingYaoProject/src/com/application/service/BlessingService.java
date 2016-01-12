@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,13 +20,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.application.biz.BlessingBiz;
+import com.application.biz.PraiseBiz;
 import com.application.biz.impl.BlessingBizImpl;
+import com.application.biz.impl.PraiseBizImpl;
 import com.application.entity.Blessing;
+import com.application.entity.Praise;
 import com.application.util.Number;
 import com.application.util.Page;
 import com.application.util.PageUtil;
 import com.application.util.PrintUtil;
-import com.sun.org.glassfish.gmbal.ParameterNames;
 
 @Controller
 @RequestMapping(value = "/b")
@@ -35,12 +36,17 @@ import com.sun.org.glassfish.gmbal.ParameterNames;
 public class BlessingService {
 
 	private BlessingBiz blessingBiz = new BlessingBizImpl();
+	
+	private PraiseBiz praiseBiz = new PraiseBizImpl();
+	
+	@Autowired
+	private HttpServletRequest request;
 
-	// µ±Ç°Ò³
+	// å½“å‰é¡µ
 	private int pageNumber = Number.ONE;
-	// ×ÜÊıÁ¿
+	// æ€»æ•°é‡
 	private int totalNumber = 0;
-	// Ã¿Ò³ÏÔÊ¾ÊıÁ¿
+	// æ¯é¡µæ˜¾ç¤ºæ•°é‡
 	private int pageSize = Number.ONE;
 
 	private int pageRange = Number.TWO;
@@ -53,39 +59,75 @@ public class BlessingService {
 
 	private List<Blessing> blessingList;
 	
+	/**
+	 * åˆ†é¡µæŸ¥è¯¢å‰ç«¯æ•°æ®
+	 * @param curPage
+	 * @param data
+	 * @return
+	 */
+	@RequestMapping(value = "/blessingManagerPageByIndex", method = RequestMethod.GET)
+	public String blessingManagerPageByIndex(@RequestParam(value = "curPage") Integer curPage , Map<String, Object> data) {
+		if (curPage != null) {
+			calculateNew(curPage, Number.ONE, Number.ONE);
+			calculateDatePage(curPage);
+			fetchPraiseByIp();
+			
+			setMap(data, "showPage", tempShowPage);
+			setMap(data, "blessingPage", page);
+			setMap(data, "blessingList", blessingList);
+			return "blessingData";
+		}
+		return "";
+	}
+	
 	@RequestMapping(value = "/updatePraiseNumber", method = RequestMethod.POST)
 	public String updatePraiseNumber(@RequestParam("id") int id, @RequestParam("upraise") int upraise, Map<String, Object> request) {
 		Blessing blessing = blessingBiz.fetchBlessingById(id);
+		Praise praise = new Praise();
+		boolean isFetchPraise = true;
 		if (blessing == null) {
 			return "";
 		}
 		
-		//¾ÉµÄÔŞÊıÁ¿
+		//æ—§çš„èµæ•°é‡
 		int lostPraise = blessing.getPraiseNumber();
 		blessing.setPraiseNumber(upraise);
 		boolean isUpdate = blessingBiz.updateBlessing(blessing);
 		if (!isUpdate) {
 			return "";
 		}
-		//°Ñ¶ÔÓ¦×´Ì¬ĞŞ¸Ä³É ÒÑĞŞ¸Ä¹ı ×´Ì¬
-		if (lostPraise < upraise) {
-			request.put("upraiseStatus", "minus");
+		isFetchPraise = praiseBiz.fetchPraiseByBlessingIdForBoolean(blessing.getId(), this.request.getRemoteAddr());
+		if (!isFetchPraise) {
+			praise.setBlessingId(blessing.getId());
+			praise.setIp(this.request.getRemoteAddr());
+			praiseBiz.addPraise(praise);
 		} else {
-			request.put("upraiseStatus", "add");
+			Praise tempPraise = ((PraiseBizImpl) praiseBiz).getPraizeEntity();
+			//æŸ¥è¯¢æ•°æ®å¹¶ä¸”åˆ é™¤ç‚¹èµæ•°æ®
+			praiseBiz.deletePraise(tempPraise.getId(), tempPraise.getBlessingId());
+		}
+		
+		//æŠŠå¯¹åº”çŠ¶æ€ä¿®æ”¹æˆ å·²ä¿®æ”¹è¿‡ çŠ¶æ€
+		if (lostPraise < upraise) {
+			setMap(request, "upraiseStatus", "minus");
+//			request.put("upraiseStatus", "minus");
+		} else {
+			setMap(request, "upraiseStatus", "add");
+//			request.put("upraiseStatus", "add");
 		}
 		request.put("blessing", blessing);
 		return "/praise";
 	}
 	
 	/**
-	 * ºóÌ¨×£¸£±£´æ±à¼­
+	 * åå°ç¥ç¦ä¿å­˜ç¼–è¾‘
 	 * @param blessing
 	 * @param data
 	 * @return
 	 */
 	@RequestMapping(value = "/blessingEdit/{id}", method = RequestMethod.POST)
 	public String blessingEdit(Blessing blessing, Map<String, Object> data) {
-		//²éÑ¯Êı¾İ ²¢ÇÒ×é×°Êı¾İ
+		//æŸ¥è¯¢æ•°æ® å¹¶ä¸”ç»„è£…æ•°æ®
 		Blessing sBlessing = blessingBiz.fetchBlessingById(blessing.getId());
 		if (sBlessing != null) {
 			sBlessing.setBleName(blessing.getBleName());
@@ -99,7 +141,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * ºóÌ¨×£¸£½øÈë±à¼­Ò³Ãæ
+	 * åå°ç¥ç¦è¿›å…¥ç¼–è¾‘é¡µé¢
 	 * @param id
 	 * @param data
 	 * @return
@@ -119,7 +161,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * ·ÖÒ³²éÑ¯ºóÌ¨Êı¾İ
+	 * åˆ†é¡µæŸ¥è¯¢åå°æ•°æ®
 	 * @param curPage
 	 * @param data
 	 * @return
@@ -139,7 +181,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * ºóÌ¨¹ÜÀíÒ³Ãæ-×£¸£ÁĞ±í
+	 * åå°ç®¡ç†é¡µé¢-ç¥ç¦åˆ—è¡¨
 	 * @param data
 	 * @return
 	 */
@@ -151,7 +193,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * Ç°¶Ë×£¸£½øÈë±à¼­Ò³Ãæ
+	 * å‰ç«¯ç¥ç¦è¿›å…¥ç¼–è¾‘é¡µé¢
 	 * @param id
 	 * @param data
 	 * @return
@@ -174,21 +216,21 @@ public class BlessingService {
 	@RequestMapping(value = "/addBlessingData", method = RequestMethod.GET)
 	public String addBlessingDataByInput(Map<String, Object> data) {
 		System.out.println("~~~~~~~~~~~~~~addBlessingDataByInput() get");
-		// »ñÈ¡µ±Ç°Ê±¼ä
+		// è·å–å½“å‰æ—¶é—´
 		LocalDateTime localDateTime = LocalTime.now().atDate(LocalDate.now());
-		//ÓÃÓÚÏÔÊ¾
-		data.put("currentTimeShow", localDateTime.format(DateTimeFormatter.ofPattern("yyyyÄêMMÔÂddÈÕ")));
-		//ÓÃÓÚ·ÅÈëvalueÖµ
+		//ç”¨äºæ˜¾ç¤º
+		data.put("currentTimeShow", localDateTime.format(DateTimeFormatter.ofPattern("yyyyå¹´MMæœˆddæ—¥")));
+		//ç”¨äºæ”¾å…¥valueå€¼
 		data.put("currentTimeHidden", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 		PrintUtil.printUtil(data);
-		//»ñÈ¡µ¼º½
+		//è·å–å¯¼èˆª
 		data.put("action", "addBlessingData");
 		
 		return "addBlessingData";
 	}
 
 	/**
-	 * Ìí¼Ó×£¸£
+	 * æ·»åŠ ç¥ç¦
 	 * 
 	 * @param blessing
 	 * @param data
@@ -211,15 +253,15 @@ public class BlessingService {
 		PrintUtil.printUtil(blessing);
 		boolean addArgee = blessingBiz.saveBlessing(blessing);
 		if (addArgee) {
-			data.put("blessingMessage", "Ìí¼ÓÊı¾İ³É¹¦!¸ĞĞ»Äã¡£");
+			data.put("blessingMessage", "æ·»åŠ æ•°æ®æˆåŠŸ!æ„Ÿè°¢ä½ ã€‚");
 		} else {
-			data.put("blessingMessage", "³öÏÖÁËÒ»Ğ©Î´ÖªÎÊÌâ,ÄãµÄ×£¸£Ã»ÓĞÓĞĞ§±£´æ¡£±§Ç¸!");
+			data.put("blessingMessage", "å‡ºç°äº†ä¸€äº›æœªçŸ¥é—®é¢˜,ä½ çš„ç¥ç¦æ²¡æœ‰æœ‰æ•ˆä¿å­˜ã€‚æŠ±æ­‰!");
 		}
 		return "/blessingMessageAjax";
 	}
 
 	/**
-	 * ÏÔÊ¾×£¸£ÁĞ±í
+	 * æ˜¾ç¤ºç¥ç¦åˆ—è¡¨
 	 * 
 	 * @param data
 	 * @return
@@ -228,11 +270,35 @@ public class BlessingService {
 	public String showBlessingData(Map<String, Object> data) {
 		initBlessingPage(data);
 		initBlessingDataPage(data);
+		fetchPraiseByIp();
 		return "blessingData";
 	}
-
+	
 	/**
-	 * ³õÊ¼»¯×£¸£·ÖÒ³
+	 * æ˜¾ç¤ºç¥ç¦ç‚¹èµæ’ååˆ—è¡¨
+	 * @param data
+	 * @return
+	 */
+	@RequestMapping(value = "/showBlessingPraiseData", method = RequestMethod.GET)
+	public String showBlessingPraiseData(Map<String, Object> data) {
+		initBlessingPraise(data);
+		return "/blessingPraiseData";
+	}
+	
+	/**
+	 * åˆå§‹åŒ–ç¥ç¦ç‚¹èµæ’åºé›†åˆ
+	 * @param data
+	 */
+	public void initBlessingPraise(Map<String, Object> data) {
+		if (data == null) {
+			data = new HashMap<String, Object>();
+		}
+		blessingList = blessingBiz.fetchBlessingSortByPraise();
+		data.put("praiseBlessing", blessingList);
+	}
+	
+	/**
+	 * åˆå§‹åŒ–ç¥ç¦åˆ†é¡µ
 	 * 
 	 * @param data
 	 */
@@ -240,17 +306,9 @@ public class BlessingService {
 		if (data == null) {
 			data = new HashMap<String, Object>();
 		}
-		// ×ÜÊıÁ¿
-		totalNumber = blessingBiz.fetchBlessingCount();
-		// ÉèÖÃÃ¿Ò³ÏÔÊ¾ÊıÁ¿
-		pageSize = Number.TWO;
-		// ÉèÖÃµ±Ç°Ò³Ç°ºóÏÔÊ¾ÊıÁ¿
-		pageRange = Number.THREE;
-		// --- commentPage
-		page = pageUtil
-				.createPage(pageNumber, pageSize, totalNumber, pageRange);
-
-		// --- showPage »ñÈ¡ÏÔÊ¾Ò³ÃæµÄ¼¯ºÏ
+		//å¦‚æœæ”¹åŠ¨éœ€è¦æ”¹åŠ¨ä¸¤ä¸ªåœ°æ–¹,å› ä¸ºåˆå§‹åŒ–éœ€è¦è·å–ä¸€æ¬¡ å¦å¤–ä¸€å¤„åœ¨ 71è¡Œ
+		calculateNew(pageNumber, Number.ONE, Number.ONE);
+		// --- showPage è·å–æ˜¾ç¤ºé¡µé¢çš„é›†åˆ
 		tempShowPage = new ArrayList<Integer>();
 		for (int x = page.getRangeStart(); x <= page.getRangeEnd(); x++) {
 			tempShowPage.add(x);
@@ -263,7 +321,7 @@ public class BlessingService {
 	}
 
 	/**
-	 * ³õÊ¼»¯×£¸£·ÖÒ³Êı¾İ
+	 * åˆå§‹åŒ–ç¥ç¦åˆ†é¡µæ•°æ®
 	 * 
 	 * @param data
 	 */
@@ -282,21 +340,53 @@ public class BlessingService {
 	}
 	
 	/**
-	 * ¼ÆËãÊıÁ¿
+	 * è®¡ç®—æ•°é‡
 	 */
 	private void calculate(int curPage) {
-		// ×ÜÊıÁ¿
+		// æ€»æ•°é‡
 		totalNumber = blessingBiz.fetchBlessingCount();
-		// ÉèÖÃÃ¿Ò³ÏÔÊ¾ÊıÁ¿
+		// è®¾ç½®æ¯é¡µæ˜¾ç¤ºæ•°é‡
 		pageSize = Number.TWO;
-		// ÉèÖÃµ±Ç°Ò³Ç°ºóÏÔÊ¾ÊıÁ¿
+		// è®¾ç½®å½“å‰é¡µå‰åæ˜¾ç¤ºæ•°é‡
 		pageRange = Number.THREE;
 		page = pageUtil
 				.createPage(curPage, pageSize, totalNumber, pageRange);
 	}
 	
+	//è·å–ä¸­é—´åˆ†é¡µæ˜¾ç¤º
+	private void fetchTempShowPage(Page page) {
+		// --- showPage è·å–æ˜¾ç¤ºé¡µé¢çš„é›†åˆ
+		tempShowPage = new ArrayList<Integer>();
+		for (int x = page.getRangeStart(); x <= page.getRangeEnd(); x++) {
+			tempShowPage.add(x);
+		}
+	}
+	
 	/**
-	 * ¼ÆËã·ÖÒ³ÏÔÊ¾Êı¾İ
+	 * è®¾ç½®æ¯é¡µæ˜¾ç¤ºæ•°é‡/å½“å‰å‰åä¹Ÿæ˜¾ç¤ºæ•°é‡
+	 * @param pageSize
+	 * @param pageRange
+	 */
+	private void setCalcuate(int pageSize, int pageRange) {
+		this.pageSize = pageSize;
+		this.pageRange = pageSize;
+	}
+	
+	/**
+	 * è®¡ç®—æ•°é‡
+	 */
+	private void calculateNew(int curPage, int pageSize, int pageRange) {
+		// è®¾ç½®æ¯é¡µæ˜¾ç¤ºæ•°é‡ / è®¾ç½®å½“å‰é¡µå‰åæ˜¾ç¤ºæ•°é‡
+		setCalcuate(pageSize, pageRange);
+		// æ€»æ•°é‡
+		totalNumber = blessingBiz.fetchBlessingCount();
+		page = pageUtil
+				.createPage(curPage, this.pageSize, totalNumber, this.pageRange);
+		fetchTempShowPage(page);
+	}
+	
+	/**
+	 * è®¡ç®—åˆ†é¡µæ˜¾ç¤ºæ•°æ®
 	 */
 	private void calculateDatePage(int curPage) {
 		blessingList = blessingBiz.fetchBlessingByPage(page.getPageNumber(),
@@ -308,7 +398,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * ÉèÖÃÇëÇó·µ»ØÖµ
+	 * è®¾ç½®è¯·æ±‚è¿”å›å€¼
 	 * @param data
 	 * @return
 	 */
@@ -317,4 +407,28 @@ public class BlessingService {
 		return data;
 	}
 	
+	/**
+	 * è·å–å¯¹åº”ç¥ç¦ Ipæ˜¯å¦ç‚¹èµ
+	 * @return
+	 */
+	public void fetchPraiseByIp() {
+		String ip = request.getRemoteAddr();
+		List<Praise> praiseLists = praiseBiz.fetchPraiseByIp(ip);
+		List<Blessing> tempBlessings = new ArrayList<Blessing>();
+		outBlessing:
+		for (Blessing blessing : blessingList) {
+			if (praiseLists.size() > 0) {
+				for (Praise praise : praiseLists) {
+					if (praise.getBlessingId() == blessing.getId()) {
+						blessing.setPraiseStatus("minus");
+						tempBlessings.add(blessing);
+						continue outBlessing;
+					}
+				}
+			}
+			blessing.setPraiseStatus("add");
+			tempBlessings.add(blessing);
+		}
+		blessingList = tempBlessings;
+	}
 }

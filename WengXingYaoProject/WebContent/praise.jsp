@@ -5,7 +5,8 @@
 	<i class="ttm_i_img icon-thumbs-up"></i> 
 	<i class="ttm_i_text">
 		<c:if test="${blessing.praiseNumber!=0}">
-			<c:if test="${upraiseStatus eq 'minus'}">取消</c:if>赞(${blessing.praiseNumber})
+			<c:if test="${upraiseStatus eq 'minus'}">取消赞</c:if>
+			<c:if test="${upraiseStatus eq 'add'}">赞</c:if>(${blessing.praiseNumber})
 		</c:if>
 		<c:if test="${blessing.praiseNumber==0}">赞</c:if>
 	</i>

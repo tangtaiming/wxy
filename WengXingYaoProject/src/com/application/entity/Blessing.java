@@ -38,6 +38,8 @@ public class Blessing implements Serializable {
 	 * ÔŞ×ÜÊıÁ¿
 	 */
 	private int praiseNumber;
+	
+	private String praiseStatus;
 
 	public int getId() {
 		return id;
@@ -93,6 +95,14 @@ public class Blessing implements Serializable {
 
 	public void setPraiseNumber(int praiseNumber) {
 		this.praiseNumber = praiseNumber;
+	}
+
+	public String getPraiseStatus() {
+		return praiseStatus;
+	}
+
+	public void setPraiseStatus(String praiseStatus) {
+		this.praiseStatus = praiseStatus;
 	}
 
 }

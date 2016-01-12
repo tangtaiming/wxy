@@ -179,6 +179,31 @@ public class BlessingDaoImpl implements BlessingDao {
 		return isDelete;
 	}
 
+	public List<Blessing> fetchBlessingSortByPraise(int start, int end) {
+		List<Blessing> blessingLists = null;
+		con = dbUtil.getCon();
+		sql = "SELECT * FROM Blessing order by praiseNumber desc limit ?, ?";
+		try {
+			pre = con.prepareStatement(sql);
+			pre.setInt(1, start);
+			pre.setInt(2, end);
+			res = pre.executeQuery();
+			blessingLists = new ArrayList<Blessing>();
+			while(res.next()) {
+				Blessing blessing = new Blessing();
+				blessing = getBlessing(blessing, res);
+				blessingLists.add(blessing);
+			}
+		} catch (SQLException e) {
+			System.out
+					.println("-------------------ÔÞÊýÁ¿ÅÅÐò²éÑ¯×£¸£¡®Òì³£¡¯-------------------");
+			e.printStackTrace();
+		} finally {
+			dbUtil.close(con, pre, res);
+		}
+		return blessingLists;
+	}
+
 	private Blessing getBlessing(Blessing blessing, ResultSet res)
 			throws SQLException {
 		if (blessing == null) {

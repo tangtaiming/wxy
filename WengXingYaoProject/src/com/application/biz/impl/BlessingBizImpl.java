@@ -27,6 +27,12 @@ public class BlessingBizImpl implements BlessingBiz {
 		return blessingDao.fetchBlessingCount();
 	}
 	
+	public List<Blessing> fetchBlessingSortByPraise() {
+		int start = 0;
+		int end = 10;
+		return blessingDao.fetchBlessingSortByPraise(start, end);
+	}
+	
 	/**
 	 * 计算起始点
 	 * @param pageNumber  当前页

@@ -171,8 +171,8 @@ var managerPageAjax = function(url, params, curPage) {
 			url : url,
 			data : "curPage=" + params,
 			success : function(response, textStatus) {
-				removeHtml();
-				changeHtml(response);
+				removeHtml(url);
+				changeHtml(url, response);
 			},
 			error : function() {
 				alert("error!");
@@ -181,15 +181,26 @@ var managerPageAjax = function(url, params, curPage) {
 	}
 	
 	//删除页面html
-	function removeHtml() {
-		$("#xt-table-001").detach();
-		$("#xt-fenye-001").detach();
+	function removeHtml(url) {
+		if (url == "/b/blessingManagerPageByIndex") {
+			$("#ttm_con_page_data").empty();
+		} 
+		if (url == "/b/blessingManagerPage") {
+			$("#xt-table-001").detach();
+		}
+		
 	}
 	
 	//改变的页面
-	function changeHtml(response) {
-		var _changeDiv = $("#xt-input-001");
-		_changeDiv.after(response);
+	function changeHtml(url, response) {
+		if (url == "/b/blessingManagerPageByIndex") {
+			var _changeDiv = $("#ttm_con_page_data");
+			_changeDiv.append(response);
+		}
+		if (url == "/b/blessingManagerPage") {
+			var _changeDiv = $("#xt-input-001");
+			_changeDiv.after(response);
+		}
 	}
 	ajax(url, params);
 	

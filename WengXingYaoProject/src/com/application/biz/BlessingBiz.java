@@ -48,4 +48,10 @@ public interface BlessingBiz {
 	 */
 	public abstract boolean deleteBlessing(int id);
 	
+	/**
+	 * 祝福根据点赞数量排序
+	 * @return
+	 */
+	public abstract List<Blessing> fetchBlessingSortByPraise();
+	
 }
