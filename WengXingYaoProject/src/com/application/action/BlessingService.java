@@ -1,4 +1,4 @@
-package com.application.service;
+package com.application.action;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,9 +42,9 @@ public class BlessingService {
 	@Autowired
 	private HttpServletRequest request;
 
-	// 当前页
+	// 当前�?
 	private int pageNumber = Number.ONE;
-	// 总数量
+	// 总数�?
 	private int totalNumber = 0;
 	// 每页显示数量
 	private int pageSize = Number.ONE;
@@ -68,7 +68,7 @@ public class BlessingService {
 	@RequestMapping(value = "/blessingManagerPageByIndex", method = RequestMethod.GET)
 	public String blessingManagerPageByIndex(@RequestParam(value = "curPage") Integer curPage , Map<String, Object> data) {
 		if (curPage != null) {
-			calculateNew(curPage, Number.ONE, Number.ONE);
+			calculateNew(curPage, Number.TWO, Number.ONE);
 			calculateDatePage(curPage);
 			fetchPraiseByIp();
 			
@@ -89,7 +89,7 @@ public class BlessingService {
 			return "";
 		}
 		
-		//旧的赞数量
+		//旧的赞数�?
 		int lostPraise = blessing.getPraiseNumber();
 		blessing.setPraiseNumber(upraise);
 		boolean isUpdate = blessingBiz.updateBlessing(blessing);
@@ -107,7 +107,7 @@ public class BlessingService {
 			praiseBiz.deletePraise(tempPraise.getId(), tempPraise.getBlessingId());
 		}
 		
-		//把对应状态修改成 已修改过 状态
+		//把对应状态修改成 已修改过 状�??
 		if (lostPraise < upraise) {
 			setMap(request, "upraiseStatus", "minus");
 //			request.put("upraiseStatus", "minus");
@@ -219,8 +219,8 @@ public class BlessingService {
 		// 获取当前时间
 		LocalDateTime localDateTime = LocalTime.now().atDate(LocalDate.now());
 		//用于显示
-		data.put("currentTimeShow", localDateTime.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")));
-		//用于放入value值
+		data.put("currentTimeShow", localDateTime.format(DateTimeFormatter.ofPattern("yyyy年MM月dd�?")));
+		//用于放入value�?
 		data.put("currentTimeHidden", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 		PrintUtil.printUtil(data);
 		//获取导航
@@ -253,9 +253,9 @@ public class BlessingService {
 		PrintUtil.printUtil(blessing);
 		boolean addArgee = blessingBiz.saveBlessing(blessing);
 		if (addArgee) {
-			data.put("blessingMessage", "添加数据成功!感谢你。");
+			data.put("blessingMessage", "添加数据成功!感谢你�??");
 		} else {
-			data.put("blessingMessage", "出现了一些未知问题,你的祝福没有有效保存。抱歉!");
+			data.put("blessingMessage", "出现了一些未知问�?,你的祝福没有有效保存。抱�?!");
 		}
 		return "/blessingMessageAjax";
 	}
@@ -286,7 +286,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * 初始化祝福点赞排序集合
+	 * 初始化祝福点赞排序集�?
 	 * @param data
 	 */
 	public void initBlessingPraise(Map<String, Object> data) {
@@ -298,7 +298,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * 初始化祝福分页
+	 * 初始化祝福分�?
 	 * 
 	 * @param data
 	 */
@@ -306,9 +306,9 @@ public class BlessingService {
 		if (data == null) {
 			data = new HashMap<String, Object>();
 		}
-		//如果改动需要改动两个地方,因为初始化需要获取一次 另外一处在 71行
-		calculateNew(pageNumber, Number.ONE, Number.ONE);
-		// --- showPage 获取显示页面的集合
+		//如果改动�?要改动两个地�?,因为初始化需要获取一�? 另外�?处在 71�?
+		calculateNew(pageNumber, Number.TWO, Number.ONE);
+		// --- showPage 获取显示页面的集�?
 		tempShowPage = new ArrayList<Integer>();
 		for (int x = page.getRangeStart(); x <= page.getRangeEnd(); x++) {
 			tempShowPage.add(x);
@@ -321,7 +321,7 @@ public class BlessingService {
 	}
 
 	/**
-	 * 初始化祝福分页数据
+	 * 初始化祝福分页数�?
 	 * 
 	 * @param data
 	 */
@@ -343,11 +343,11 @@ public class BlessingService {
 	 * 计算数量
 	 */
 	private void calculate(int curPage) {
-		// 总数量
+		// 总数�?
 		totalNumber = blessingBiz.fetchBlessingCount();
 		// 设置每页显示数量
 		pageSize = Number.TWO;
-		// 设置当前页前后显示数量
+		// 设置当前页前后显示数�?
 		pageRange = Number.THREE;
 		page = pageUtil
 				.createPage(curPage, pageSize, totalNumber, pageRange);
@@ -355,7 +355,7 @@ public class BlessingService {
 	
 	//获取中间分页显示
 	private void fetchTempShowPage(Page page) {
-		// --- showPage 获取显示页面的集合
+		// --- showPage 获取显示页面的集�?
 		tempShowPage = new ArrayList<Integer>();
 		for (int x = page.getRangeStart(); x <= page.getRangeEnd(); x++) {
 			tempShowPage.add(x);
@@ -363,7 +363,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * 设置每页显示数量/当前前后也显示数量
+	 * 设置每页显示数量/当前前后也显示数�?
 	 * @param pageSize
 	 * @param pageRange
 	 */
@@ -376,9 +376,9 @@ public class BlessingService {
 	 * 计算数量
 	 */
 	private void calculateNew(int curPage, int pageSize, int pageRange) {
-		// 设置每页显示数量 / 设置当前页前后显示数量
+		// 设置每页显示数量 / 设置当前页前后显示数�?
 		setCalcuate(pageSize, pageRange);
-		// 总数量
+		// 总数�?
 		totalNumber = blessingBiz.fetchBlessingCount();
 		page = pageUtil
 				.createPage(curPage, this.pageSize, totalNumber, this.pageRange);
@@ -398,7 +398,7 @@ public class BlessingService {
 	}
 	
 	/**
-	 * 设置请求返回值
+	 * 设置请求返回�?
 	 * @param data
 	 * @return
 	 */

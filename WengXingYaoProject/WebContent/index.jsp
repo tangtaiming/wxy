@@ -31,10 +31,10 @@
                     <div id="ifocus_pic">
                         <div id="ifocus_piclist" style="left:0; top:0;">
                             <ul>
-                                <li><a href="http://www.17sucai.com/" target="_blank"><img src="/img/IMG01.png" alt="校园模特招聘" /></a></li>
-                                <li><a href="http://www.17sucai.com/" target="_blank"><img src="/img/IMG02.png" alt="网上有名" /></a></li>
-                                <li><a href="http://www.17sucai.com/" target="_blank"><img src="/img/IMG03.png" alt="网上有名" /></a></li>
-                                <li><a href="http://www.17sucai.com/" target="_blank"><img src="/img/IMG04.png" alt="网上有名" /></a></li>
+                                <li><a href="javascript:;" target="_blank"><img src="/img/IMG01.png" alt="--" /></a></li>
+                                <li><a href="javascript:;" target="_blank"><img src="/img/IMG02.png" alt="--" /></a></li>
+                                <li><a href="javascript:;" target="_blank"><img src="/img/IMG03.png" alt="--" /></a></li>
+                                <li><a href="javascript:;" target="_blank"><img src="/img/IMG04.png" alt="--" /></a></li>
                             </ul>
                         </div>
                         <div id="ifocus_opdiv"></div>
@@ -68,13 +68,14 @@
        </div><!-- row end -->
     </div><!-- container end -->
     <!-- 评论 -->
-    <div class="container margin10">
+    <div class="container margin-auto-bottom-50">
 		<div id="ttm_con_page_data" class="ttm_index">
-			<div id="load_img_index" class="row text-center">
+			<div id="load_img_index" class="row text-center" style="margin:0px 0px 250px 0px;">
 				<i class="icon-refresh icon-2x icon-spin"></i> <span class="icon-2x">加载数据...</span>
 			</div>
 		</div><!-- ttm_index end -->
     </div><!-- 评论 end -->
+    <%@include file="fooder.jsp" %>
 </body>
 </html>
 <script type="text/javascript">

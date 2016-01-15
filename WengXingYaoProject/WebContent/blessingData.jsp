@@ -59,8 +59,9 @@
    	没有数据呢！
 </c:if>
 <c:if test="${requestScope.blessingList.size() > 0}">
-	<c:forEach items="${requestScope.blessingList}" var="blessing">
-	<div class="ttm_div">
+	<c:forEach items="${requestScope.blessingList}" var="blessing" varStatus="status">
+	<c:if test="${status.last==true}"><div class="ttm_div_end ttm_div"></c:if>
+	<c:if test="${status.last==false}"><div class="ttm_div"></c:if>
 		<span href="#" class="ttm_span">
 			<div class="ttm_img">
 				<img src="/img/shouye3.jpg" />

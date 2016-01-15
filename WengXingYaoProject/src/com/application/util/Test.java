@@ -9,12 +9,12 @@ import java.util.Calendar;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.application.action.UserService;
 import com.application.dao.BlessingDao;
 import com.application.dao.UserDao;
 import com.application.dao.impl.BlessingDaoImpl;
 import com.application.entity.Blessing;
 import com.application.entity.User;
-import com.application.service.UserService;
 
 public class Test {
 
